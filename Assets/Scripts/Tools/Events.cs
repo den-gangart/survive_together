@@ -1,0 +1,26 @@
+using Unity.Services.Lobbies.Models;
+
+public interface GameEvent
+{
+
+}
+
+public class NameChangeEvent: GameEvent
+{
+    public string name;
+}
+
+public class JoinLobbyEvent : GameEvent
+{
+    public Lobby lobby;
+}
+
+public class CreateLobbyEvent : GameEvent
+{
+    public Lobby lobby;
+}
+
+public class LeftLobbyEvent: GameEvent
+{
+
+}
