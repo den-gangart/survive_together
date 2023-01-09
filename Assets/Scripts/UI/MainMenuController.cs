@@ -43,12 +43,13 @@ public class MainMenuController : MonoBehaviour
         _menuTransform.gameObject.SetActive(true);
     }
 
-    private void CreatePopup(Popup popup)
+    private Popup CreatePopup(Popup popup)
     {
         Popup createdPopup = Instantiate(popup, _popupTransform);
         createdPopup.PopupClosed += OnPopupClosed;
         _menuTransform.gameObject.SetActive(false);
         _activePopup = createdPopup;
+        return createdPopup;
     }
 
     private void OnLobbyCreated(CreateLobbyEvent createLobbyEvent)
@@ -68,7 +69,8 @@ public class MainMenuController : MonoBehaviour
             Destroy(_activePopup.gameObject);
         }
 
-        CreatePopup(_popupData.lobby);
+        LobbyPopup lobbyPopup = (LobbyPopup) CreatePopup(_popupData.lobby);
+        lobbyPopup.InitializeLobby(lobby);
     }
 
     private void OnQuitPressed()

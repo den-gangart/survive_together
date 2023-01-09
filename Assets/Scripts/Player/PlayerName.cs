@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class PlayerNameData
 {
+    private string _defaultName = "Player";
     private string _playerName;
     public string PlayerName { get { return _playerName; } }
 
-    public PlayerNameData(string defaultName)
+    public PlayerNameData()
     {
         if (PlayerPrefs.HasKey(PlayerPrefsKeys.PLAYER_NAME))
         {
-            _playerName = PlayerPrefs.GetString(PlayerPrefsKeys.PLAYER_NAME, defaultName);
+            _playerName = PlayerPrefs.GetString(PlayerPrefsKeys.PLAYER_NAME, _defaultName);
         }
         else
         {
-            PlayerPrefs.SetString(PlayerPrefsKeys.PLAYER_NAME, defaultName);
-            _playerName = defaultName;
+            PlayerPrefs.SetString(PlayerPrefsKeys.PLAYER_NAME, _defaultName);
+            _playerName = _defaultName;
         }
     }
 
-    public void ChangeName(NameChangeEvent nameChangeEvent)
+    public void ChangeName(string newName)
     {
-        _playerName = nameChangeEvent.name;
+        _playerName = newName;
         PlayerPrefs.SetString(PlayerPrefsKeys.PLAYER_NAME, _playerName);
         Debug.Log("Player name changed to: " + _playerName);
     }

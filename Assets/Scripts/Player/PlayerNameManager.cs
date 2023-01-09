@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class PlayerNameManager : Singleton<PlayerNameManager>
 {
-    [SerializeField] private string _defaultName;
     private PlayerNameData _playerNameData;
     public string PlayerName { get { return _playerNameData.PlayerName; } }
 
     protected override void OnAwake()
     {
-        _playerNameData = new PlayerNameData(_defaultName);
-        EventSystem.AddEventListener<NameChangeEvent>(_playerNameData.ChangeName);
+        _playerNameData = new PlayerNameData();
+        EventSystem.AddEventListener<NameChangeEvent>(OnNameChanged);
     }
 
     private void OnDestroy()
     {
-        EventSystem.RemoveEventListener<NameChangeEvent>(_playerNameData.ChangeName);
+        EventSystem.RemoveEventListener<NameChangeEvent>(OnNameChanged);
+    }
+
+    private void OnNameChanged(NameChangeEvent nameChangeEvent)
+    {
+        _playerNameData.ChangeName(nameChangeEvent.name);
     }
 }

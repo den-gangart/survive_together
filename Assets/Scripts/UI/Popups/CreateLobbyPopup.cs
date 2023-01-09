@@ -13,6 +13,8 @@ public class CreateLobbyPopup : Popup
     [SerializeField] private Button _buttonCreate;
     [SerializeField] private Button _buttonClose;
 
+    private const int _selectPlayerCountOffset = 2;
+
     private void Start()
     {
         _buttonCreate.onClick.AddListener(CreateLobby);
@@ -23,7 +25,7 @@ public class CreateLobbyPopup : Popup
     {
         LobbyParameters lobbyParameters = new LobbyParameters(
             _lobbyNameField.text, 
-            _playerCountDropDown.value,
+            _playerCountDropDown.value + _selectPlayerCountOffset,
             _isPrivateToggle.isOn
         );
 

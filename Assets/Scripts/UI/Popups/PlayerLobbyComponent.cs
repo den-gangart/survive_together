@@ -11,7 +11,7 @@ public class PlayerLobbyComponent : MonoBehaviour
     public void InitizalizePlayerInfo(Player player)
     {
         PlayerDataObject playerData;
-        if (player.Data.TryGetValue(PlayerPrefsKeys.PLAYER_NAME, out playerData))
+        if (player.Data.TryGetValue(PlayerDataKeys.PLAYER_NAME, out playerData))
         {
             _playerNameText.text = playerData.Value;
         }

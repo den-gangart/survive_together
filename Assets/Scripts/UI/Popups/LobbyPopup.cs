@@ -18,6 +18,12 @@ public class LobbyPopup : Popup
     {
         _startButton.onClick.AddListener(OnStartGamePressed);
         _quitButton.onClick.AddListener(OnQuitLobbyPressed);
+        LobbyManager.Instance.Provider.LobbyUpdate += OnLobbyUpdate;
+    }
+
+    private void OnDestroy()
+    {
+        LobbyManager.Instance.Provider.LobbyUpdate -= OnLobbyUpdate;
     }
 
     public void InitializeLobby(Lobby lobby)
@@ -61,7 +67,7 @@ public class LobbyPopup : Popup
     {
         for (int i = 0; i < _playerLayoutTransform.childCount; i++)
         {
-            Destroy(_playerLayoutTransform.GetChild(i));
+            Destroy(_playerLayoutTransform.GetChild(i).gameObject);
         }
     }
 
