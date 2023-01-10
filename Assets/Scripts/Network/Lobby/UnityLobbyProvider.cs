@@ -38,11 +38,6 @@ public class UnityLobbyProvider
             Lobby lobby =  await Lobbies.Instance.GetLobbyAsync(_hostLobby.Id);
             _hostLobby = lobby;
             lobbyUpdate?.Invoke(lobby);
-
-            if(lobby.Players.Count == 0)
-            {
-                RemoveLobby();
-            }
         }
         catch (LobbyServiceException e)
         {

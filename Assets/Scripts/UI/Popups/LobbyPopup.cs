@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine.UI;
+using System;
 
 public class LobbyPopup : Popup
 {
@@ -14,6 +15,7 @@ public class LobbyPopup : Popup
     [SerializeField] private PlayerLobbyComponent _playerComponentPrefab;
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _quitButton;
+    private List<PlayerLobbyComponent> _childList = new List<PlayerLobbyComponent>();
 
     public void InitializeLobby(Lobby lobby)
     {
@@ -32,56 +34,63 @@ public class LobbyPopup : Popup
         LobbyManager.Instance.LobbyUpdate += OnLobbyUpdate;
     }
 
-    private void OnDestroy()
-    {
-        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
-    }
-
     private void SetLobbyCompontents(Lobby lobby)
     {
-        _lobbyNameText.text = lobby.Name;
-        _playerCountText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
-        _lobbyCodeText.text = lobby.LobbyCode;
-
-        ClearPlayerList();
+        UpdateTopPanelText(lobby);
         SpawnPlayerList(lobby.Players, lobby.HostId);
-
-        if(LobbyManager.Instance.IsOwner)
-        {
-            _startButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _startButton.gameObject.SetActive(false);
-        }
+        _startButton.gameObject.SetActive(LobbyManager.Instance.IsOwner);
     }
 
     private void OnStartGamePressed()
     {
-
+        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
     }
 
     private void OnQuitLobbyPressed()
     {
+        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
         LobbyManager.Instance.LeaveLobby();
         ClosePopup();
     }
 
-    private void ClearPlayerList()
+    private void SpawnPlayerList(List<Player> playerList, string hostId)
     {
-        for (int i = 0; i < _playerLayoutTransform.childCount; i++)
+        int createdObjectCount = _childList.Count;
+        int childIndex = 0;
+
+        foreach (var player in playerList)
         {
-            Destroy(_playerLayoutTransform.GetChild(i).gameObject);
+            PlayerLobbyComponent playerComponent;
+            if (childIndex < createdObjectCount)
+            {
+                playerComponent = _childList[childIndex];
+            }
+            else
+            {
+                playerComponent = Instantiate(_playerComponentPrefab, _playerLayoutTransform);
+                _childList.Add(playerComponent);
+            }
+
+            playerComponent.InitizalizePlayerInfo(player, player.Id.Equals(hostId));
+            childIndex++;
+        }
+
+        RemoveRemainListObjects(childIndex, createdObjectCount);
+    }
+
+    private void RemoveRemainListObjects(int childIndex, int createdObjectCount)
+    {
+        for (int i = childIndex; i < createdObjectCount; i++)
+        {
+            Destroy(_childList[i].gameObject);
+            _childList.RemoveAt(i);
         }
     }
 
-    private void SpawnPlayerList(List<Player> playerList, string hostId)
+    private void UpdateTopPanelText(Lobby lobby)
     {
-        foreach(var player in playerList)
-        {
-            var playerComponent = Instantiate(_playerComponentPrefab, _playerLayoutTransform);
-            bool isOwner = player.Id.Equals(hostId);
-            playerComponent.InitizalizePlayerInfo(player, isOwner);
-        }
+        _lobbyNameText.text = lobby.Name;
+        _playerCountText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
+        _lobbyCodeText.text = lobby.LobbyCode;
     }
 }
