@@ -9,22 +9,11 @@ public class LobbyPopup : Popup
 {
     [SerializeField] private TextMeshProUGUI _lobbyNameText;
     [SerializeField] private TextMeshProUGUI _playerCountText;
+    [SerializeField] private TextMeshProUGUI _lobbyCodeText;
     [SerializeField] private Transform _playerLayoutTransform;
     [SerializeField] private PlayerLobbyComponent _playerComponentPrefab;
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _quitButton;
-
-    private void Start()
-    {
-        _startButton.onClick.AddListener(OnStartGamePressed);
-        _quitButton.onClick.AddListener(OnQuitLobbyPressed);
-        LobbyManager.Instance.Provider.LobbyUpdate += OnLobbyUpdate;
-    }
-
-    private void OnDestroy()
-    {
-        LobbyManager.Instance.Provider.LobbyUpdate -= OnLobbyUpdate;
-    }
 
     public void InitializeLobby(Lobby lobby)
     {
@@ -36,12 +25,26 @@ public class LobbyPopup : Popup
         SetLobbyCompontents(lobby);
     }
 
+    private void Start()
+    {
+        _startButton.onClick.AddListener(OnStartGamePressed);
+        _quitButton.onClick.AddListener(OnQuitLobbyPressed);
+        LobbyManager.Instance.LobbyUpdate += OnLobbyUpdate;
+    }
+
+    private void OnDestroy()
+    {
+        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
+    }
+
     private void SetLobbyCompontents(Lobby lobby)
     {
         _lobbyNameText.text = lobby.Name;
         _playerCountText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
+        _lobbyCodeText.text = lobby.LobbyCode;
+
         ClearPlayerList();
-        SpawnPlayerList(lobby.Players);
+        SpawnPlayerList(lobby.Players, lobby.HostId);
 
         if(LobbyManager.Instance.IsOwner)
         {
@@ -60,6 +63,7 @@ public class LobbyPopup : Popup
 
     private void OnQuitLobbyPressed()
     {
+        LobbyManager.Instance.LeaveLobby();
         ClosePopup();
     }
 
@@ -71,12 +75,13 @@ public class LobbyPopup : Popup
         }
     }
 
-    private void SpawnPlayerList(List<Player> playerList)
+    private void SpawnPlayerList(List<Player> playerList, string hostId)
     {
         foreach(var player in playerList)
         {
             var playerComponent = Instantiate(_playerComponentPrefab, _playerLayoutTransform);
-            playerComponent.InitizalizePlayerInfo(player);
+            bool isOwner = player.Id.Equals(hostId);
+            playerComponent.InitizalizePlayerInfo(player, isOwner);
         }
     }
 }

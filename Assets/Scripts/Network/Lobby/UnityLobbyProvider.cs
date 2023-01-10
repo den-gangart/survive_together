@@ -9,12 +9,15 @@ using System;
 public class UnityLobbyProvider
 {
     private Lobby _hostLobby;
+    private ILobbyOptions _lobbyOptions;
 
     public bool IsOwner { get; private set; }
     public Lobby HostLobby { get { return _hostLobby; } }
-    public event Action<Lobby> JoinedToLobby;
-    public event Action<Lobby> LobbyUpdate;
-    public event Action LeftFromLobby;
+
+    public UnityLobbyProvider(ILobbyOptions lobbyOptions)
+    {
+        _lobbyOptions = lobbyOptions;
+    }
 
     public async void HeartBeat()
     {
@@ -28,13 +31,18 @@ public class UnityLobbyProvider
         }
     }
 
-    public async void UpdateLobby()
+    public async void UpdateLobby(Action<Lobby> lobbyUpdate)
     {
         try
         {
             Lobby lobby =  await Lobbies.Instance.GetLobbyAsync(_hostLobby.Id);
             _hostLobby = lobby;
-            LobbyUpdate?.Invoke(lobby);
+            lobbyUpdate?.Invoke(lobby);
+
+            if(lobby.Players.Count == 0)
+            {
+                RemoveLobby();
+            }
         }
         catch (LobbyServiceException e)
         {
@@ -42,14 +50,17 @@ public class UnityLobbyProvider
         }
     }
 
-    public async void CreateLobby(LobbyParameters lobbyParameters)
+    public async void CreateLobby(LobbyParameters lobbyParameters, Action<Lobby> joinedToLobby)
     {
         try
         {
-            _hostLobby =  await Lobbies.Instance.CreateLobbyAsync(lobbyParameters.name, lobbyParameters.maxPlayerCount, GetCreateLobbyOptions(lobbyParameters.isPrivate));
-            IsOwner = true;
-            JoinedToLobby?.Invoke(_hostLobby);
-            Debug.Log("Lobby created");
+            _hostLobby =  await Lobbies.Instance.CreateLobbyAsync(
+                lobbyParameters.name, 
+                lobbyParameters.maxPlayerCount, 
+                _lobbyOptions.GetCreateLobbyOptions(lobbyParameters.isPrivate)
+            );
+
+            ProccessJoinToLobby(joinedToLobby, true);
         }
         catch (LobbyServiceException e)
         {
@@ -57,20 +68,18 @@ public class UnityLobbyProvider
         }
     }
 
-    public async Task<List<Lobby>> GetLobbyList()
+    public async void LoadLobbyList(Action<List<Lobby>> lobbyListLoaded)
     {
         var result =  await Lobbies.Instance.QueryLobbiesAsync();
-        return result.Results;
+        lobbyListLoaded?.Invoke(result.Results);
     }
 
-    public async void JoinLobbyByCode(string code)
+    public async void JoinLobbyByCode(string code, Action<Lobby> joinedToLobby)
     {
         try
         {
-            Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(code);
-            JoinedToLobby?.Invoke(lobby);
-            IsOwner = false;
-            Debug.Log("Joined to lobby");
+            _hostLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(code, _lobbyOptions.GetJoinLobbyByCodeOptions());
+            ProccessJoinToLobby(joinedToLobby, false);
         }
         catch (LobbyServiceException e)
         {
@@ -78,14 +87,12 @@ public class UnityLobbyProvider
         }
     }
 
-    public async void JoinLobbyById(string lobbyId)
+    public async void JoinLobbyById(string lobbyId, Action<Lobby> joinedToLobby)
     {
         try
         {
-            Lobby lobby =  await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
-            JoinedToLobby?.Invoke(lobby);
-            IsOwner = false;
-            Debug.Log("Joined to lobby");
+            _hostLobby =  await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId, _lobbyOptions.GetJoinLobbyByIdOptions());
+            ProccessJoinToLobby(joinedToLobby, false);
         }
         catch (LobbyServiceException e)
         {
@@ -93,11 +100,12 @@ public class UnityLobbyProvider
         }
     }
 
-    public void LeaveLobby()
+    public async void LeaveLobby(Action leftFromLobby)
     {
         try
         {
-            LeftFromLobby?.Invoke();
+            await Lobbies.Instance.RemovePlayerAsync(_hostLobby.Id, AuthenticationService.Instance.PlayerId);
+            leftFromLobby?.Invoke();
             _hostLobby = null;
         }
         catch (LobbyServiceException e)
@@ -106,11 +114,12 @@ public class UnityLobbyProvider
         }
     }
 
-    public void RemoveLobby()
+    public async void RemoveLobby()
     {
         try
         {
-            Lobbies.Instance.DeleteLobbyAsync(_hostLobby.Id);
+           await Lobbies.Instance.DeleteLobbyAsync(_hostLobby.Id);
+           ResetLobbyData();
         }
         catch (LobbyServiceException e)
         {
@@ -118,24 +127,23 @@ public class UnityLobbyProvider
         }
     }
 
-    private CreateLobbyOptions GetCreateLobbyOptions(bool isPrivate)
+    private void ProccessJoinToLobby(Action<Lobby> joinedToLobby, bool isOwner)
     {
-        return new CreateLobbyOptions
+        joinedToLobby?.Invoke(_hostLobby);
+        this.IsOwner = isOwner;
+
+        if(isOwner)
         {
-            Player = GetPlayerInfo(),
-            IsPrivate = isPrivate,
-            Data = new Dictionary<string, DataObject>(),
-        };
+            Debug.Log("Lobby has created");
+            return;
+        }
+
+        Debug.Log("Joined to lobby");
     }
 
-    private Player GetPlayerInfo()
+    private void ResetLobbyData()
     {
-        return new Player
-        {
-            Data = new Dictionary<string, PlayerDataObject>()
-            {
-                { PlayerDataKeys.PLAYER_NAME, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, new PlayerNameData().PlayerName) },
-            }
-        };
+        _hostLobby = null;
+        IsOwner = false;
     }
 }

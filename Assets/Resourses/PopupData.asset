@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb706aeaa8d8dab4fa3622f871b969b4, type: 3}
   m_Name: PopupData
   m_EditorClassIdentifier: 
-  joinLobby: {fileID: 9086974557863339883, guid: 7d7d5eedf8df6d34489f056b46f8ef70, type: 3}
+  joinLobby: {fileID: 2421873201712004040, guid: 4694913737bc9ab4cb552ac2d212ad9d, type: 3}
   createLobby: {fileID: 9086974557863339883, guid: f5dfb351f92d94c4188e1fdc27f261d7, type: 3}
   lobby: {fileID: 4778920593865975618, guid: 7d7d5eedf8df6d34489f056b46f8ef70, type: 3}

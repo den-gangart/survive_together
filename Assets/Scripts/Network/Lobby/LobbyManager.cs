@@ -9,91 +9,75 @@ using System;
 
 public class LobbyManager : Singleton<LobbyManager>
 {
-    public bool IsJoinedToLobby { get; private set; }
+    public bool IsJoinedToLobby { get { return _lobbyProvider.HostLobby != null; } }
     public bool IsOwner { get { return _lobbyProvider.IsOwner; } }
-    public UnityLobbyProvider Provider { get { return _lobbyProvider; } }
 
-    [SerializeField] private float _lobbyHeartBeatTime;
-    [SerializeField] private float _updateLobbyTime;
+    public event Action<Lobby> JoinedToLobby;
+    public event Action<Lobby> LobbyUpdate;
+    public event Action<List<Lobby>> LoadedLobbyList;
 
     private UnityLobbyProvider _lobbyProvider;
-    private Timer _statusTimer;
-    private Timer _updateTimer;
 
     protected override void OnAwake()
     {
-        SetTimers();
         CreateLobbyProvider();
         base.OnAwake();
     }
 
-    private void Update()
-    {
-        if(_lobbyProvider.HostLobby != null)
-        {
-            _statusTimer.Tick(Time.deltaTime);
-            _updateTimer.Tick(Time.deltaTime);
-        }
-    }
-
-    private void SetTimers()
-    {
-        _statusTimer = new(_lobbyHeartBeatTime);
-        _statusTimer.OnTimerDone += OnHearBeatLobby;
-
-        _updateTimer = new(_updateLobbyTime);
-        _updateTimer.OnTimerDone += OnLobbyUpdate;
-    }
-
     private void CreateLobbyProvider()
     {
-        _lobbyProvider = new UnityLobbyProvider();
-        _lobbyProvider.JoinedToLobby += OnJoinedToLobby;
-        _lobbyProvider.LeftFromLobby += OnLeftFromLobby;
+        _lobbyProvider = new UnityLobbyProvider(new UnityLobbyOptions());
     }
 
     private void OnJoinedToLobby(Lobby lobby)
     {
-        IsJoinedToLobby = true;
+        JoinedToLobby?.Invoke(lobby);
         EventSystem.Broadcast(new JoinLobbyEvent { lobby = lobby });
     }
 
     private void OnLeftFromLobby()
     {
-        IsJoinedToLobby = false;
         EventSystem.Broadcast(new LeftLobbyEvent());
     }
 
-    private void OnHearBeatLobby()
+    public void OnHearBeatLobby()
     {
         _lobbyProvider.HeartBeat();
-        _statusTimer.Reset(_lobbyHeartBeatTime);
     }
     
-    private void OnLobbyUpdate()
+    public void OnLobbyUpdate()
     {
-        _lobbyProvider.UpdateLobby();
-        _updateTimer.Reset(_lobbyHeartBeatTime);
+        _lobbyProvider.UpdateLobby(LobbyUpdate);
     }
 
     public void CreateLobby(LobbyParameters lobbyParameters)
     {
-        _lobbyProvider.CreateLobby(lobbyParameters);
+        _lobbyProvider.CreateLobby(lobbyParameters, OnJoinedToLobby);
     }
 
     public void JoinToLobbyById(string id)
     {
-        _lobbyProvider.JoinLobbyById(id);
+        _lobbyProvider.JoinLobbyById(id, OnJoinedToLobby);
     }
 
     public void JoinToLobbyWithCode(string code)
     {
-        _lobbyProvider.JoinLobbyByCode(code);
+        _lobbyProvider.JoinLobbyByCode(code, OnJoinedToLobby);
+    }
+
+    public void LoadLobbyList()
+    {
+        _lobbyProvider.LoadLobbyList(LoadedLobbyList);
+    }
+
+    public void LeaveLobby()
+    {
+        _lobbyProvider.LeaveLobby(OnLeftFromLobby);
     }
 
     private void OnApplicationQuit()
     {
-        if (_lobbyProvider.HostLobby != null)
+        if (_lobbyProvider.HostLobby != null && _lobbyProvider.IsOwner)
             _lobbyProvider.RemoveLobby();
     }
 }

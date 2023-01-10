@@ -6,15 +6,19 @@ using System;
 public class Timer
 {
     public event Action OnTimerDone;
+    private float _totalTime;
     private float _leftTime = 0f;
+    private bool _autoReset;
 
-    public Timer(float time)
+    public Timer(float time, bool autoReset = true)
     {
+        _autoReset = autoReset;
         Reset(time);
     }
 
     public void Reset(float newTime)
     {
+        _totalTime = newTime;
         _leftTime = newTime;
     }
 
@@ -30,6 +34,11 @@ public class Timer
         {
             _leftTime = 0;
             OnTimerDone?.Invoke();
+
+            if(_autoReset)
+            {
+                Reset(_totalTime);
+            }
         }
     }
 }

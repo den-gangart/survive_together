@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5366300041819456655}
   - component: {fileID: 5366300041819456654}
+  - component: {fileID: 2995429195278673394}
   m_Layer: 0
   m_Name: Lobby Manager
   m_TagString: Untagged
@@ -45,5 +46,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPermanent: 1
+--- !u!114 &2995429195278673394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5366300041819457395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f96a163b70c9b8c429ec4e351ce9845d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _lobbyHeartBeatTime: 15
   _updateLobbyTime: 1
