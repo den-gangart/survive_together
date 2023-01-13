@@ -21,12 +21,13 @@ public class LobbyManager : Singleton<LobbyManager>
     protected override void OnAwake()
     {
         CreateLobbyProvider();
+        _lobbyProvider.JoinToGameSession += OnJoinedToGameSession;
         base.OnAwake();
     }
 
     private void CreateLobbyProvider()
     {
-        _lobbyProvider = new UnityLobbyProvider(new UnityLobbyOptions());
+        _lobbyProvider = new UnityLobbyProvider(new UnityLobbyOptions(), new RelayMultiplayerProvider());
     }
 
     private void OnJoinedToLobby(Lobby lobby)
@@ -47,7 +48,12 @@ public class LobbyManager : Singleton<LobbyManager>
     
     public void OnLobbyUpdate()
     {
-        _lobbyProvider.UpdateLobby(LobbyUpdate);
+        _lobbyProvider.GetLobby(LobbyUpdate);
+    }
+
+    public void SetLobbyCustomData(params LobbyCustomData[] lobbyCustomDatas)
+    {
+        _lobbyProvider.UpdateLobbyData(LobbyUpdate, lobbyCustomDatas);
     }
 
     public void CreateLobby(LobbyParameters lobbyParameters)
@@ -73,6 +79,16 @@ public class LobbyManager : Singleton<LobbyManager>
     public void LeaveLobby()
     {
         _lobbyProvider.LeaveLobby(OnLeftFromLobby);
+    }
+
+    public void StartGameSession()
+    {
+        _lobbyProvider.CreateGameSession();
+    }
+
+    private void OnJoinedToGameSession()
+    {
+        EventSystem.Broadcast(new StartGameSessionEvent());
     }
 
     private void OnApplicationQuit()

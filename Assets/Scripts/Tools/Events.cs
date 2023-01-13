@@ -24,3 +24,8 @@ public class LeftLobbyEvent: GameEvent
 {
 
 }
+
+public class StartGameSessionEvent : GameEvent
+{
+
+}

@@ -28,7 +28,10 @@ public class LobbyCheckTimers : MonoBehaviour
     {
         if (_lobbyManager.IsJoinedToLobby)
         {
-            _statusTimer.Tick(Time.deltaTime);
+            if(_lobbyManager.IsOwner)
+            {
+                _statusTimer.Tick(Time.deltaTime);
+            }
             _updateTimer.Tick(Time.deltaTime);
         }
     }

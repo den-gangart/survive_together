@@ -22,7 +22,25 @@ public class UnityLobbyOptions: ILobbyOptions
         {
             Player = GetPlayerInfo(),
             IsPrivate = isPrivate,
-            Data = new Dictionary<string, DataObject>(),
+            Data = new Dictionary<string, DataObject>()
+            {
+                { LobbyDataKeys.JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Public) },
+            },
+        };
+    }
+
+    public UpdateLobbyOptions GetUpdateLobbyOptions(params LobbyCustomData[] lobbyCustomDataList)
+    {
+        Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>();
+        
+        foreach(var customData in lobbyCustomDataList)
+        {
+            lobbyData.Add(customData.key, new DataObject(DataObject.VisibilityOptions.Public, customData.value));
+        }
+
+        return new UpdateLobbyOptions
+        {
+            Data = lobbyData,
         };
     }
 

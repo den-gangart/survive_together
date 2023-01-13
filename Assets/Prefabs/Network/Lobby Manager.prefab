@@ -59,4 +59,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lobbyHeartBeatTime: 15
-  _updateLobbyTime: 1
+  _updateLobbyTime: 2

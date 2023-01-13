@@ -43,14 +43,18 @@ public class LobbyPopup : Popup
 
     private void OnStartGamePressed()
     {
-        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
+        LobbyManager.Instance.StartGameSession();
     }
 
     private void OnQuitLobbyPressed()
     {
-        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
         LobbyManager.Instance.LeaveLobby();
         ClosePopup();
+    }
+
+    private void OnDestroy()
+    {
+        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
     }
 
     private void SpawnPlayerList(List<Player> playerList, string hostId)
