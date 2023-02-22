@@ -3,27 +3,23 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine.SceneManagement;
 
-public class AuthenticationManager : Singleton<AuthenticationManager> 
+public class AuthenticationManager
 {
-    protected async override void OnAwake()
+    public AuthenticationManager()
     {
-        await UnityServices.InitializeAsync();
         AuthenticationService.Instance.Expired += OnExpiredSession;
         AuthenticationService.Instance.SignedIn += OnSignedIn;
         AuthenticationService.Instance.SignedOut += OnSignedOut;
+
+        ContinueAnonymously();
     }
 
-    private void OnDestroy()
+
+    ~AuthenticationManager()
     {
         AuthenticationService.Instance.Expired -= OnExpiredSession;
         AuthenticationService.Instance.SignedIn -= OnSignedIn;
         AuthenticationService.Instance.SignedOut -= OnSignedOut;
-    }
-
-
-    private void Start()
-    {
-        ContinueAnonymously();
     }
 
     public async void ContinueAnonymously()
@@ -53,18 +49,19 @@ public class AuthenticationManager : Singleton<AuthenticationManager>
 
     private void OnSignedIn()
     {
-        SceneManager.LoadScene(SceneNames.MENU_SCENE);
+        EventSystem.Broadcast(new SignInEvent());
         Debug.Log("Signed in!");
     }
 
     private void OnSignedOut()
     {
+        EventSystem.Broadcast(new SignOutEvent());
         Debug.Log("Signed out!");
     }
 
     private void OnExpiredSession()
     {
-        SceneManager.LoadScene(SceneNames.AUTHORIZATION_SCENE);
+        EventSystem.Broadcast(new SignOutEvent());
         Debug.LogWarning("Session expired");
     }
 }

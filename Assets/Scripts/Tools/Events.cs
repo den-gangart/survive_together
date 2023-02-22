@@ -1,9 +1,6 @@
 using Unity.Services.Lobbies.Models;
 
-public interface GameEvent
-{
-
-}
+public interface GameEvent {}
 
 public class NameChangeEvent: GameEvent
 {
@@ -20,12 +17,7 @@ public class CreateLobbyEvent : GameEvent
     public Lobby lobby;
 }
 
-public class LeftLobbyEvent: GameEvent
-{
-
-}
-
-public class StartGameSessionEvent : GameEvent
-{
-
-}
+public class LeftLobbyEvent: GameEvent {}
+public class StartGameSessionEvent : GameEvent {}
+public class SignInEvent: GameEvent {}
+public class SignOutEvent: GameEvent {}

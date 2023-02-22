@@ -29,6 +29,6 @@ public class CreateLobbyPopup : Popup
             _isPrivateToggle.isOn
         );
 
-        LobbyManager.Instance.CreateLobby(lobbyParameters);
+       NetworkSystem.Instance.LobbyProvider.CreateLobby(lobbyParameters);
     }
 }

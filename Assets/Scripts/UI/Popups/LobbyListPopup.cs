@@ -19,13 +19,7 @@ public class LobbyListPopup : Popup
         _refreshButton.onClick.AddListener(OnRefresh);
         _joinByIdButton.onClick.AddListener(OnJoinByCode);
         _quitButton.onClick.AddListener(OnQuitLobbyPressed);
-        LobbyManager.Instance.LoadedLobbyList += OnLobbyListLoaded;
         OnRefresh();
-    }
-
-    private void OnDestroy()
-    {
-        LobbyManager.Instance.LoadedLobbyList -= OnLobbyListLoaded;
     }
 
     private void OnLobbyListLoaded(List<Lobby> lobbies)
@@ -36,13 +30,13 @@ public class LobbyListPopup : Popup
 
     private void OnJoinById(string id)
     {
-        LobbyManager.Instance.JoinToLobbyById(id);
+        NetworkSystem.Instance.LobbyProvider.JoinLobbyById(id);
     }
 
     private void OnJoinByCode()
     {
         string code = _joinCodeField.text;
-        LobbyManager.Instance.JoinToLobbyWithCode(code);
+        NetworkSystem.Instance.LobbyProvider.JoinLobbyByCode(code);
     }
 
     private void OnQuitLobbyPressed()
@@ -69,6 +63,6 @@ public class LobbyListPopup : Popup
 
     private void OnRefresh()
     {
-        LobbyManager.Instance.LoadLobbyList();
+        NetworkSystem.Instance.LobbyProvider.LoadLobbyList(OnLobbyListLoaded);
     }
 }

@@ -31,30 +31,31 @@ public class LobbyPopup : Popup
     {
         _startButton.onClick.AddListener(OnStartGamePressed);
         _quitButton.onClick.AddListener(OnQuitLobbyPressed);
-        LobbyManager.Instance.LobbyUpdate += OnLobbyUpdate;
+
+        NetworkSystem.Instance.LobbyProvider.LobbyUpdate += OnLobbyUpdate;
     }
 
     private void SetLobbyCompontents(Lobby lobby)
     {
         UpdateTopPanelText(lobby);
         SpawnPlayerList(lobby.Players, lobby.HostId);
-        _startButton.gameObject.SetActive(LobbyManager.Instance.IsOwner);
+        _startButton.gameObject.SetActive(NetworkSystem.Instance.LobbyProvider.IsOwner);
     }
 
     private void OnStartGamePressed()
     {
-        LobbyManager.Instance.StartGameSession();
+        NetworkSystem.Instance.CreateGameSession();
     }
 
     private void OnQuitLobbyPressed()
     {
-        LobbyManager.Instance.LeaveLobby();
+        NetworkSystem.Instance.LobbyProvider.LeaveLobby(null);
         ClosePopup();
     }
 
     private void OnDestroy()
     {
-        LobbyManager.Instance.LobbyUpdate -= OnLobbyUpdate;
+        NetworkSystem.Instance.LobbyProvider.LobbyUpdate -= OnLobbyUpdate;
     }
 
     private void SpawnPlayerList(List<Player> playerList, string hostId)
