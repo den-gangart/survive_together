@@ -76,6 +76,7 @@ public class LobbyMenuHandler : MonoBehaviour
     }
 
     public bool IsLobbyOwner() => NetworkSystem.Instance.LobbyProvider.IsOwner;
+    public Lobby GetJoinedLobby() => NetworkSystem.Instance.LobbyProvider.HostLobby;
 
     public void CreateGameSession()
     {
@@ -88,7 +89,6 @@ public class LobbyMenuHandler : MonoBehaviour
             HandleError();
         }
     }
-
 
     private void HandleError()
     {

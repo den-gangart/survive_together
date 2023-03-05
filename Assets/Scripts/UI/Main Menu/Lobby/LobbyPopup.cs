@@ -38,6 +38,7 @@ public class LobbyPopup : PopupWithTween
     public override void Open()
     {
        _lobbyHandler.LobbyUpdate += OnLobbyUpdate;
+        InitializeLobby(_lobbyHandler.GetJoinedLobby());
         base.Open();
     }
 
