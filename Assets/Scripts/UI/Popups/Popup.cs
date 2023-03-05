@@ -6,10 +6,15 @@ using System;
 
 public class Popup : MonoBehaviour
 {
-    public Action<Popup> PopupClosed;
+    public event Action<Popup> PopupClose;
+
+    protected virtual void OnStart() { }
 
     public virtual void ClosePopup()
     {
-        PopupClosed?.Invoke(this);
+        PopupClose?.Invoke(this);
     }
+
+    public virtual void Close() { }
+    public virtual void Open() { }
 }

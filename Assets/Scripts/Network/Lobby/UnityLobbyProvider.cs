@@ -36,6 +36,7 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -55,6 +56,7 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -69,7 +71,7 @@ public class UnityLobbyProvider
         }
     }
 
-    public async void CreateLobby(LobbyParameters lobbyParameters)
+    public async Task<Lobby> CreateLobby(LobbyParameters lobbyParameters)
     {
         try
         {
@@ -80,42 +82,49 @@ public class UnityLobbyProvider
             );
 
             ProccessJoinToLobby(true);
+
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void LoadLobbyList(Action<List<Lobby>> lobbyListLoaded)
+    public async Task<List<Lobby>> LoadLobbyList()
     {
         var result =  await Lobbies.Instance.QueryLobbiesAsync();
-        lobbyListLoaded?.Invoke(result.Results);
+        return result.Results;
     }
 
-    public async void JoinLobbyByCode(string code)
+    public async Task<Lobby> JoinLobbyByCode(string code)
     {
         try
         {
             _hostLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(code, _lobbyOptions.GetJoinLobbyByCodeOptions());
             ProccessJoinToLobby(false);
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void JoinLobbyById(string lobbyId)
+    public async Task<Lobby> JoinLobbyById(string lobbyId)
     {
         try
         {
             _hostLobby =  await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId, _lobbyOptions.GetJoinLobbyByIdOptions());
             ProccessJoinToLobby(false);
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -136,20 +145,21 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void LeaveLobby(Action leftFromLobby)
+    public async void LeaveLobby()
     {
         try
         {
             await Lobbies.Instance.RemovePlayerAsync(_hostLobby.Id, AuthenticationService.Instance.PlayerId);
             _hostLobby = null;
-            EventSystem.Broadcast(new LeftLobbyEvent {});
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -163,6 +173,7 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -173,12 +184,10 @@ public class UnityLobbyProvider
 
         if (isOwner)
         { 
-            EventSystem.Broadcast(new CreateLobbyEvent { lobby = _hostLobby });
             Debug.Log("Lobby created");
             return;
         }
 
-        EventSystem.Broadcast(new JoinLobbyEvent { lobby = _hostLobby });
         Debug.Log("Joined to lobby");
     }
 

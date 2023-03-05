@@ -10,12 +10,10 @@ public class LobbyCheckTimers : MonoBehaviour
     private Timer _statusTimer;
     private Timer _updateTimer;
 
-    private UnityLobbyProvider _lobbyProvider;
+    private UnityLobbyProvider _lobbyProvider => NetworkSystem.Instance.LobbyProvider;
 
     private void Start()
     {
-        _lobbyProvider = NetworkSystem.Instance.LobbyProvider;
-
         _statusTimer = new(_lobbyHeartBeatTime);
         _statusTimer.OnTimerDone += _lobbyProvider.HeartBeat;
 

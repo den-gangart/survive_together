@@ -38,6 +38,7 @@ public class NetworkSystem : Singleton<NetworkSystem>
         catch (Exception e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -51,6 +52,7 @@ public class NetworkSystem : Singleton<NetworkSystem>
         catch (Exception e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 }
