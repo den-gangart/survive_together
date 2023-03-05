@@ -111,7 +111,8 @@ public class MapGenerator : MonoBehaviour
             {
                 var sr = go.GetComponent<SpriteRenderer>();
                 var tileConfigurator = go.GetComponent<TileConfiguration>(); // TODO: use tile method configeration
-                sr.sprite = spriteCollection[spriteID];
+                tileConfigurator.TileConfig(spriteID, mapWidth, mapHeight);
+               //  sr.sprite = spriteCollection[spriteID];
             }
 
             if (column == (maxColumns - 1))
