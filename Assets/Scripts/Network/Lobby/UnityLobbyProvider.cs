@@ -8,21 +8,23 @@ using System;
 
 public class UnityLobbyProvider
 {
+    public event Action<Lobby> JoinedToLobby;
+    public event Action<Lobby> LobbyUpdate;
+    public event Action<List<Lobby>> LoadedLobbyList;
+    public event Action<string> JoinToGameSession;
+
     public bool IsOwner { get; private set; }
     public bool IsJoinedToGame { get; private set; }
     public Lobby HostLobby { get { return _hostLobby; } }
-    public event Action JoinToGameSession;
-
+    public bool IsJoinedToLobby { get { return _hostLobby != null; } }
 
     private Lobby _hostLobby;
     private ILobbyOptions _lobbyOptions;
-    private IMultiplayerProviderWithCode _multiplayerProvider;
 
-    public UnityLobbyProvider(ILobbyOptions lobbyOptions, IMultiplayerProviderWithCode multiplayerProvider)
+    public UnityLobbyProvider(ILobbyOptions lobbyOptions)
     {
         IsJoinedToGame = false;
         _lobbyOptions = lobbyOptions;
-        _multiplayerProvider = multiplayerProvider;
     }
 
     public async void HeartBeat()
@@ -34,44 +36,17 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void CreateGameSession()
-    {
-        try
-        {
-            string _joinCode = await _multiplayerProvider.StartGame();
-            LobbyCustomData lobbyCustomData = new LobbyCustomData(LobbyDataKeys.JOIN_CODE, _joinCode);
-            UpdateLobbyData(null, lobbyCustomData);
-            JoinToGameSession?.Invoke();
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogException(e);
-        }
-    }
-
-    public async void JoinGameSession(string joinCode)
-    {
-        try
-        {
-            await _multiplayerProvider.JoinGame(joinCode);
-            JoinToGameSession?.Invoke();
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogException(e);
-        }
-    }
-
-    public async void GetLobby(Action<Lobby> lobbyUpdate)
+    public async void UpdateLobby()
     {
         try
         {
             Lobby lobby =  await Lobbies.Instance.GetLobbyAsync(_hostLobby.Id);
             _hostLobby = lobby;
-            lobbyUpdate?.Invoke(lobby);
+            LobbyUpdate?.Invoke(lobby);
 
             if(!IsJoinedToGame)
             {
@@ -81,22 +56,22 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
     public void CheckGameSessionStart()
     {
         string joinCode = _hostLobby.Data[LobbyDataKeys.JOIN_CODE].Value;
-        if (IsOwner || string.IsNullOrEmpty(joinCode))
-        {
-            return;
-        }
+        IsJoinedToGame = !IsOwner && !string.IsNullOrEmpty(joinCode);
 
-        JoinGameSession(joinCode);
-        IsJoinedToGame = true;
+        if(IsJoinedToGame)
+        {
+            JoinToGameSession?.Invoke(joinCode);
+        }
     }
 
-    public async void CreateLobby(LobbyParameters lobbyParameters, Action<Lobby> joinedToLobby)
+    public async Task<Lobby> CreateLobby(LobbyParameters lobbyParameters)
     {
         try
         {
@@ -106,45 +81,59 @@ public class UnityLobbyProvider
                 _lobbyOptions.GetCreateLobbyOptions(lobbyParameters.isPrivate)
             );
 
-            ProccessJoinToLobby(joinedToLobby, true);
+            ProccessJoinToLobby(true);
+
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void LoadLobbyList(Action<List<Lobby>> lobbyListLoaded)
+    public async Task<List<Lobby>> LoadLobbyList()
     {
         var result =  await Lobbies.Instance.QueryLobbiesAsync();
-        lobbyListLoaded?.Invoke(result.Results);
+        return result.Results;
     }
 
-    public async void JoinLobbyByCode(string code, Action<Lobby> joinedToLobby)
+    public async Task<Lobby> JoinLobbyByCode(string code)
     {
         try
         {
             _hostLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(code, _lobbyOptions.GetJoinLobbyByCodeOptions());
-            ProccessJoinToLobby(joinedToLobby, false);
+            ProccessJoinToLobby(false);
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void JoinLobbyById(string lobbyId, Action<Lobby> joinedToLobby)
+    public async Task<Lobby> JoinLobbyById(string lobbyId)
     {
         try
         {
             _hostLobby =  await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId, _lobbyOptions.GetJoinLobbyByIdOptions());
-            ProccessJoinToLobby(joinedToLobby, false);
+            ProccessJoinToLobby(false);
+            return _hostLobby;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
+
+    public void SetGameJoinCode(string code)
+    {
+        LobbyCustomData lobbyCustomData = new LobbyCustomData(LobbyDataKeys.JOIN_CODE, code);
+        UpdateLobbyData(null, lobbyCustomData);
+    }
+
     public async void UpdateLobbyData(Action<Lobby> lobbyUpdate, params LobbyCustomData[] lobbyCustomDatas)
     {
         try
@@ -156,20 +145,21 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    public async void LeaveLobby(Action leftFromLobby)
+    public async void LeaveLobby()
     {
         try
         {
             await Lobbies.Instance.RemovePlayerAsync(_hostLobby.Id, AuthenticationService.Instance.PlayerId);
-            leftFromLobby?.Invoke();
             _hostLobby = null;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
@@ -183,17 +173,18 @@ public class UnityLobbyProvider
         catch (LobbyServiceException e)
         {
             Debug.LogException(e);
+            throw e;
         }
     }
 
-    private void ProccessJoinToLobby(Action<Lobby> joinedToLobby, bool isOwner)
+    private void ProccessJoinToLobby(bool isOwner)
     {
-        joinedToLobby?.Invoke(_hostLobby);
+        JoinedToLobby?.Invoke(_hostLobby);
         this.IsOwner = isOwner;
 
-        if(isOwner)
-        {
-            Debug.Log("Lobby has created");
+        if (isOwner)
+        { 
+            Debug.Log("Lobby created");
             return;
         }
 
