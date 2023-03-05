@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 3106670375862938405}
   - component: {fileID: 3106670375862938402}
   - component: {fileID: 3106670375862938403}
-  - component: {fileID: 8977977200268039705}
   - component: {fileID: 1039602465526032734}
   - component: {fileID: 8592574467329571774}
   - component: {fileID: 7027651999538823779}
   - component: {fileID: 8034020311760009134}
+  - component: {fileID: 2993303767087110455}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -106,32 +106,6 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &8977977200268039705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3106670375862938400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  InLocalSpace: 0
-  Interpolate: 1
 --- !u!50 &1039602465526032734
 Rigidbody2D:
   serializedVersion: 4
@@ -190,3 +164,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2476a341dfbad574da9d3e0f67352f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2993303767087110455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106670375862938400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
