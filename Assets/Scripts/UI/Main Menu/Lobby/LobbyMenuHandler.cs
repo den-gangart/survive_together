@@ -56,7 +56,7 @@ public class LobbyMenuHandler : MonoBehaviour
         try
         {
             Lobby lobby = await NetworkSystem.Instance.LobbyProvider.JoinLobbyById(id);
-            EventSystem.Broadcast(new JoinLobbyEvent());
+            EventSystem.Broadcast(new JoinLobbyEvent());       
         }
         catch
         {

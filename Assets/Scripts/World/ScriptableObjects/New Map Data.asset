@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b32f838839a9b884ea56d6ab5c83e764, type: 3}
   m_Name: New Map Data
   m_EditorClassIdentifier: 
-  mapWidth: 0
-  mapHeight: 0
+  jsonDataMap: 
+  mapWidth: 20
+  mapHeight: 20
   mapMaxColumns: 0
+  tileMapIndexesList: 
