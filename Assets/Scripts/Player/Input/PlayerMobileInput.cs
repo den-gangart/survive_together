@@ -5,7 +5,13 @@ using Zenject;
 
 public class PlayerMobileInput : IPlayerInput
 {
-    [Inject] FixedJoystick _fixedJoystick;
+    ScreenInput _screenInput;
+    private Joystick _joystick;
+    public void Setup(ScreenInput screenInput)
+    {
+        _screenInput = screenInput;
+        _joystick = _screenInput.Joystick; 
+    }
 
     public bool GetAttackInput()
     {
@@ -14,6 +20,11 @@ public class PlayerMobileInput : IPlayerInput
 
     public Vector2 GetMovementInput()
     {
-        return new Vector2(_fixedJoystick.Horizontal, _fixedJoystick.Vertical);
+        if (_joystick != null)
+        {
+            return new Vector2(_joystick.Horizontal, _joystick.Vertical);
+        }
+
+        return Vector2.zero;
     }
 }
