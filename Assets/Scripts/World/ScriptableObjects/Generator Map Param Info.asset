@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a549da2f4ec29347a1f7115964ed7f3, type: 3}
+  m_Name: Generator Map Param Info
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 5364205103949873179, guid: 0305b92120f2df745b5a3440edc6dfbc, type: 3}
+  tileSize: {x: 16, y: 16}
+  mapData: {fileID: 11400000, guid: da2464046aeebe84bb9e2035db8a9a25, type: 2}
+  MapTexture: {fileID: 2800000, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  spriteCollection:
+  - {fileID: 678681828, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1605271054, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1495100794, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1861853213, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1245777063, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1489178495, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1088465689, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -418346663, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1202657546, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1820030747, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1307663598, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1210548083, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -282994619, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1281048294, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 598787553, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -94869624, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1557393533, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1435516812, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: 1856382114, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -145404703, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -41875383, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - {fileID: -1031621322, guid: d688ce74dbdcf1047825c385664d076d, type: 3}

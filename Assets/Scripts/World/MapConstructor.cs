@@ -12,7 +12,7 @@ public enum TileType
     Mountains = 18,
     Towns = 19,
     Castle = 20,
-    Monster = 21
+    Lake = 21
 }
 
 public class MapConstructor
@@ -82,7 +82,7 @@ public class MapConstructor
         DecorateTiles(LandTiles, hillPercent, TileType.Hills);
         DecorateTiles(LandTiles, mountainPercent, TileType.Mountains);
         DecorateTiles(LandTiles, townPercent, TileType.Towns);
-        DecorateTiles(LandTiles, monsterPercent, TileType.Monster);
+        DecorateTiles(LandTiles, monsterPercent, TileType.Lake);
     }
 
     private void CreateTiles()
@@ -102,30 +102,30 @@ public class MapConstructor
 
     private void FindRightTileSides()
     {
-        for (var r = 0; r < rows; r++)
+        for (var curRow = 0; curRow < rows; curRow++)
         {
-            for (var c = 0; c < columns; c++)
+            for (var curColumn = 0; curColumn < columns; curColumn++)
             {
-                var tile = tiles[columns * r + c];
+                var tile = tiles[columns * curRow + curColumn];
 
-                if (r < rows - 1) // Bottom Sides
+                if (curRow < rows - 1) // Bottom Sides
                 {
-                    tile.AddTileToSide(TileSides.Bottom, tiles[columns * (r + 1) + c]);
+                    tile.AddTileToSide(TileSides.Bottom, tiles[columns * (curRow + 1) + curColumn]);
                 }
 
-                if (c < columns - 1) // Right Sides
+                if (curColumn < columns - 1) // Right Sides
                 {
-                    tile.AddTileToSide(TileSides.Right, tiles[columns * r + c + 1]);
+                    tile.AddTileToSide(TileSides.Right, tiles[columns * curRow + curColumn + 1]);
                 }
 
-                if (c > 0) // Left Sides
+                if (curColumn > 0) // Left Sides
                 {
-                    tile.AddTileToSide(TileSides.Left, tiles[columns * r + c - 1]);
+                    tile.AddTileToSide(TileSides.Left, tiles[columns * curRow + curColumn - 1]);
                 }
 
-                if (r > 0) // Top Sides
+                if (curRow > 0) // Top Sides
                 {
-                    tile.AddTileToSide(TileSides.Top, tiles[columns * (r - 1) + c]);
+                    tile.AddTileToSide(TileSides.Top, tiles[columns * (curRow - 1) + curColumn]);
                 }
 
             }

@@ -151,7 +151,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1889476261}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,36 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92cbe907573559344a0d2d4a34d03c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapData: {fileID: 11400000, guid: da2464046aeebe84bb9e2035db8a9a25, type: 2}
-  mapContainer: {fileID: 179369201}
+  mapContainer: {fileID: 1889476260}
+  mapParam: {fileID: 11400000, guid: 1aa7ec86246d3e14ea0568ff48e428ba, type: 2}
   mapWidth: 6
   mapHeight: 12
-  tilePrefab: {fileID: 5364205103949873179, guid: 0305b92120f2df745b5a3440edc6dfbc, type: 3}
-  tileSize: {x: 16, y: 16}
-  MapTexture: {fileID: 2800000, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  spriteCollection:
-  - {fileID: 678681828, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1605271054, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1495100794, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1861853213, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1245777063, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1489178495, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1088465689, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -418346663, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1202657546, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1820030747, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1307663598, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1210548083, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -282994619, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1281048294, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 598787553, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -94869624, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1557393533, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1435516812, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: 1856382114, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -145404703, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -41875383, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
-  - {fileID: -1031621322, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
   erodePercent: 0
   erodeIterations: 1
   densityTreePlantations: 0.3
@@ -205,6 +180,53 @@ MonoBehaviour:
   townsDencity: 0.05
   cavesDencity: 0.1
   lakePercent: 0.003
+--- !u!1 &346799341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346799343}
+  - component: {fileID: 346799342}
+  m_Layer: 0
+  m_Name: LevelCreatorObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &346799342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346799341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4abf0759999504c91fea26d78d4a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapContainer: {fileID: 1732918213}
+  mapParam: {fileID: 11400000, guid: 69ad422fe1b776443a0631e1e32846eb, type: 2}
+--- !u!4 &346799343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346799341}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 41.43632, y: -33.19492, z: 15.008377}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1732918214}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1159937683
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,3 +339,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+--- !u!1 &1732918213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1732918214}
+  m_Layer: 0
+  m_Name: MapContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1732918214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732918213}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 346799343}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1889476260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1889476261}
+  m_Layer: 0
+  m_Name: MapContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1889476261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889476260}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 41.43632, y: -33.19492, z: 15.008377}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 179369204}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
