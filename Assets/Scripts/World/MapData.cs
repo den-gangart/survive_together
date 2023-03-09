@@ -8,34 +8,66 @@ public class MapData : ScriptableObject
     [Space]
     [Header("===== Json Data Field =====")]
     public string jsonDataMap;
-
-    public int mapWidth;
-    public int mapHeight;
-    public int mapMaxColumns;
-    public int[] tileMapIndexesList;
-    [HideInInspector]
-    public object becaupMapObj;
+    public SavebleMapData _mapData;
    
     public void SaveAndConvertToJsonData(MapConstructor map)
     {
-        mapHeight = map.columns;
-        mapWidth = map.rows;
-        mapMaxColumns = map.columns;
-        becaupMapObj = map;
-
         var mapTilesArrObj = map.tiles;
-        tileMapIndexesList = new int[mapTilesArrObj.Length];
+
+        _mapData = new SavebleMapData()
+        {
+            mapHeight = map.rows,
+            mapWidth = map.columns,
+            tiles = new TileData[mapTilesArrObj.Length],
+        };
+
+
         for (var i= 0; i < mapTilesArrObj.Length; i++)
         {
-            tileMapIndexesList[i] = mapTilesArrObj[i].autotileID;
+            _mapData.tiles[i] = new TileData()
+            {
+                index = mapTilesArrObj[i].autotileID,
+                isUsed = false,
+            };
         }
 
-        jsonDataMap = JsonUtility.ToJson(this, true);
+        jsonDataMap = JsonUtility.ToJson(_mapData);
     }
 
-    public MapConstructor RestorMapDataFromJson()
+    public MapConstructor LoadFromJson()
     {
-        becaupMapObj = JsonUtility.FromJson<MapConstructor>(jsonDataMap);
-        return (MapConstructor)becaupMapObj;
+        _mapData = JsonUtility.FromJson<SavebleMapData>(jsonDataMap);
+
+        MapConstructor mapConstructor = new MapConstructor()
+        {
+            columns = _mapData.mapWidth,
+            rows = _mapData.mapHeight,
+            tiles = new MapElement[_mapData.tiles.Length],
+        };
+
+        for (var i = 0; i < _mapData.tiles.Length; i++)
+        {
+            mapConstructor.tiles[i] = new MapElement()
+            {
+                autotileID = _mapData.tiles[i].index,
+            };
+        }
+
+        return mapConstructor;
     }
+}
+
+[System.Serializable]
+public class SavebleMapData
+{
+    public int mapWidth;
+    public int mapHeight;
+    public TileData[] tiles;
+}
+
+[System.Serializable]
+public class TileData
+{
+    public int index;
+    public bool isUsed;
 }

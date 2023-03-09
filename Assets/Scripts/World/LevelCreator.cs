@@ -16,7 +16,7 @@ public class LevelCreator : MonoBehaviour
     {
         map = new MapConstructor();
         grid = new GridConstructor();
-        var becaupMapObj = mapParam.mapData.RestorMapDataFromJson();
+        var becaupMapObj = mapParam.mapData.LoadFromJson();
         grid.CreateGrid(becaupMapObj, mapParam, mapContainer);
     }
 }

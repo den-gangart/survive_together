@@ -61,7 +61,7 @@ public class MapGenerator : MonoBehaviour
 
     public void LoadMap()
     {
-        var becaupMapObj = mapParam.mapData.RestorMapDataFromJson();
+        var becaupMapObj = mapParam.mapData.LoadFromJson();
         grid.CreateGrid(becaupMapObj, mapParam, mapContainer);
     }
 
