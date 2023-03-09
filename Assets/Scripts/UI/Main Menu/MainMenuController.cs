@@ -19,6 +19,7 @@ namespace SurviveTogether.UI
         [SerializeField] private Popup _joinLobbyWindow;
         [SerializeField] private Popup _createLobbyWindow;
         [SerializeField] private Popup _lobbyWindow;
+        [SerializeField] private Popup _connectionWindow;
 
         private void Awake()
         {
@@ -38,18 +39,20 @@ namespace SurviveTogether.UI
 
         private void OnCreateLobbyEvent(CreateLobbyEvent e) => OpenLobby();
         private void OnJoinLobbyEvent(JoinLobbyEvent e) => OpenLobby();
-
+        private void ConnectEvent(ConnectEvent e) => OpenWindow(_connectionWindow);
 
         private void OnEnable()
         {
             EventSystem.AddEventListener<CreateLobbyEvent>(OnCreateLobbyEvent);
             EventSystem.AddEventListener<JoinLobbyEvent>(OnJoinLobbyEvent);
+            EventSystem.AddEventListener<ConnectEvent>(ConnectEvent);
         }
 
         private void OnDisable()
         {
             EventSystem.RemoveEventListener<CreateLobbyEvent>(OnCreateLobbyEvent);
             EventSystem.RemoveEventListener<JoinLobbyEvent>(OnJoinLobbyEvent);
+            EventSystem.RemoveEventListener<ConnectEvent>(ConnectEvent);
         }
     }
 }

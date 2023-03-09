@@ -33,6 +33,7 @@ namespace SurviveTogether.Network
         {
             try
             {
+                EventSystem.Broadcast(new ConnectEvent());
                 string joinCode = await _multiplayerProvider.StartGame();
                 _lobbyProvider.SetGameJoinCode(joinCode);
                 EventSystem.Broadcast(new StartGameSessionEvent());
@@ -48,6 +49,7 @@ namespace SurviveTogether.Network
         {
             try
             {
+                EventSystem.Broadcast(new ConnectEvent());
                 await _multiplayerProvider.JoinGame(joinCode);
                 EventSystem.Broadcast(new StartGameSessionEvent());
             }

@@ -17,6 +17,7 @@ public class CreateLobbyEvent : GameEvent
     public Lobby lobby;
 }
 
+public class ConnectEvent: GameEvent { }
 public class LeftLobbyEvent: GameEvent {}
 public class StartGameSessionEvent : GameEvent {}
 public class SignInEvent: GameEvent {}

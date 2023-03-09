@@ -30,6 +30,10 @@ namespace SurviveTogether.Players
             {
                 _name.Value = PlayerNameManager.Instance.PlayerName;
             }
+            else
+            {
+                OnNameChanged(string.Empty, _name.Value);
+            }
         }
 
         private void OnNameChanged(FixedString32Bytes prevValue, FixedString32Bytes currentValue)
