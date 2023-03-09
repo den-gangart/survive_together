@@ -153,7 +153,15 @@ public class UnityLobbyProvider
     {
         try
         {
-            await Lobbies.Instance.RemovePlayerAsync(_hostLobby.Id, AuthenticationService.Instance.PlayerId);
+            if(_hostLobby.Players.Count == 1)
+            {
+                RemoveLobby();
+            }
+            else
+            {
+                await Lobbies.Instance.RemovePlayerAsync(_hostLobby.Id, AuthenticationService.Instance.PlayerId);
+            }
+          
             _hostLobby = null;
         }
         catch (LobbyServiceException e)

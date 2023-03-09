@@ -55,4 +55,12 @@ public class NetworkSystem : Singleton<NetworkSystem>
             throw e;
         }
     }
+
+    private void OnApplicationQuit()
+    {
+        if(_lobbyProvider.IsJoinedToLobby)
+        {
+            _lobbyProvider.LeaveLobby();
+        }
+    }
 }
