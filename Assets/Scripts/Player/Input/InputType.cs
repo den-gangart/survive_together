@@ -1,5 +1,8 @@
-public enum InputType
+namespace SurviveTogether.Players.InputHandle
 {
-    Screen,
-    Devices,
+    public enum InputType
+    {
+        Screen,
+        Devices,
+    }
 }

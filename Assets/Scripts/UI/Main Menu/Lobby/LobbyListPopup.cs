@@ -6,80 +6,83 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class LobbyListPopup : PopupWithTween
+namespace SurviveTogether.UI
 {
-    [Header(EditorTitles.FIELDS_HEADER)]
-    [SerializeField] private Transform _lobbyLayoutTransform;
-    [SerializeField] private JoinLobbyComponent _lobbyComponentPrefab;
-    [SerializeField] private TMP_InputField _joinCodeField;
-
-    [Header(EditorTitles.BUTTONS_HEADER)]
-    [SerializeField] private Button _refreshButton;
-    [SerializeField] private Button _joinByIdButton;
-    [SerializeField] private Button _quitButton;
-
-    [Inject] private LobbyMenuHandler _lobbyHandler;
-
-    protected override void OnStart()
+    public class LobbyListPopup : PopupWithTween
     {
-        _refreshButton.onClick.AddListener(OnRefresh);
-        _joinByIdButton.onClick.AddListener(OnJoinByCode);
-        _quitButton.onClick.AddListener(OnQuitLobbyPressed);
-    }
+        [Header(EditorTitles.FIELDS_HEADER)]
+        [SerializeField] private Transform _lobbyLayoutTransform;
+        [SerializeField] private JoinLobbyComponent _lobbyComponentPrefab;
+        [SerializeField] private TMP_InputField _joinCodeField;
 
-    public override void Open()
-    {
-        OnRefresh();
-        base.Open();
-    }
+        [Header(EditorTitles.BUTTONS_HEADER)]
+        [SerializeField] private Button _refreshButton;
+        [SerializeField] private Button _joinByIdButton;
+        [SerializeField] private Button _quitButton;
 
-    public override void Close()
-    {
-        ClearLobbyList();
-        base.Close();
-    }
+        [Inject] private LobbyMenuHandler _lobbyHandler;
 
-    private void OnLobbyListLoaded(List<Lobby> lobbies)
-    {
-        ClearLobbyList();
-        SpawnLobbyList(lobbies);
-    }
-
-    private void OnJoinById(string id)
-    {
-       _lobbyHandler.JoinLobbyWithId(id);
-    }
-
-    private void OnJoinByCode()
-    {
-        string code = _joinCodeField.text;
-        _lobbyHandler.JoinLobbyWithCode(code);
-    }
-
-    private void ClearLobbyList()
-    {
-        for (int i = 0; i < _lobbyLayoutTransform.childCount; i++)
+        protected override void OnStart()
         {
-            Destroy(_lobbyLayoutTransform.GetChild(i).gameObject);
+            _refreshButton.onClick.AddListener(OnRefresh);
+            _joinByIdButton.onClick.AddListener(OnJoinByCode);
+            _quitButton.onClick.AddListener(OnQuitLobbyPressed);
         }
-    }
 
-    private void SpawnLobbyList(List<Lobby> lobbyList)
-    {
-        foreach (var lobby in lobbyList)
+        public override void Open()
         {
-            var lobbyComponent = Instantiate(_lobbyComponentPrefab, _lobbyLayoutTransform);
-            lobbyComponent.InitizalizeLobbyInfo(lobby, OnJoinById);
+            OnRefresh();
+            base.Open();
         }
-    }
 
-    private void OnRefresh()
-    {
-        _lobbyHandler.LoadLobbyList(OnLobbyListLoaded);
-    }
+        public override void Close()
+        {
+            ClearLobbyList();
+            base.Close();
+        }
 
-    private void OnQuitLobbyPressed()
-    {
-        ClosePopup();
+        private void OnLobbyListLoaded(List<Lobby> lobbies)
+        {
+            ClearLobbyList();
+            SpawnLobbyList(lobbies);
+        }
+
+        private void OnJoinById(string id)
+        {
+            _lobbyHandler.JoinLobbyWithId(id);
+        }
+
+        private void OnJoinByCode()
+        {
+            string code = _joinCodeField.text;
+            _lobbyHandler.JoinLobbyWithCode(code);
+        }
+
+        private void ClearLobbyList()
+        {
+            for (int i = 0; i < _lobbyLayoutTransform.childCount; i++)
+            {
+                Destroy(_lobbyLayoutTransform.GetChild(i).gameObject);
+            }
+        }
+
+        private void SpawnLobbyList(List<Lobby> lobbyList)
+        {
+            foreach (var lobby in lobbyList)
+            {
+                var lobbyComponent = Instantiate(_lobbyComponentPrefab, _lobbyLayoutTransform);
+                lobbyComponent.InitizalizeLobbyInfo(lobby, OnJoinById);
+            }
+        }
+
+        private void OnRefresh()
+        {
+            _lobbyHandler.LoadLobbyList(OnLobbyListLoaded);
+        }
+
+        private void OnQuitLobbyPressed()
+        {
+            ClosePopup();
+        }
     }
 }

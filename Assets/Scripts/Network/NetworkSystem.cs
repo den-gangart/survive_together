@@ -6,61 +6,64 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class NetworkSystem : Singleton<NetworkSystem>
+namespace SurviveTogether.Network
 {
-    private AuthenticationManager _authenticationManager;
-    private UnityLobbyProvider _lobbyProvider;
-    private RelayMultiplayerProvider _multiplayerProvider;
-
-    public AuthenticationManager AuthenticationManager { get { return _authenticationManager; } }
-    public UnityLobbyProvider LobbyProvider { get { return _lobbyProvider; } }
-    public IMultiplayerProviderWithCode MultiplayerProvider { get { return _multiplayerProvider; } }
-
-    protected async override void OnAwake()
+    public class NetworkSystem : Singleton<NetworkSystem>
     {
-        await UnityServices.InitializeAsync();
+        private AuthenticationManager _authenticationManager;
+        private UnityLobbyProvider _lobbyProvider;
+        private RelayMultiplayerProvider _multiplayerProvider;
 
-        _authenticationManager = new AuthenticationManager();
-        _lobbyProvider = new UnityLobbyProvider(new UnityLobbyOptions());
-        _multiplayerProvider = new RelayMultiplayerProvider();
+        public AuthenticationManager AuthenticationManager { get { return _authenticationManager; } }
+        public UnityLobbyProvider LobbyProvider { get { return _lobbyProvider; } }
+        public IMultiplayerProviderWithCode MultiplayerProvider { get { return _multiplayerProvider; } }
 
-        _lobbyProvider.JoinToGameSession += JoinGameSession;
-    }
-
-    public async void CreateGameSession()
-    {
-        try
+        protected async override void OnAwake()
         {
-            string joinCode = await _multiplayerProvider.StartGame();
-            _lobbyProvider.SetGameJoinCode(joinCode);
-            EventSystem.Broadcast(new StartGameSessionEvent());
+            await UnityServices.InitializeAsync();
+
+            _authenticationManager = new AuthenticationManager();
+            _lobbyProvider = new UnityLobbyProvider(new UnityLobbyOptions());
+            _multiplayerProvider = new RelayMultiplayerProvider();
+
+            _lobbyProvider.JoinToGameSession += JoinGameSession;
         }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-            throw e;
-        }
-    }
 
-    public async void JoinGameSession(string joinCode)
-    {
-        try
+        public async void CreateGameSession()
         {
-            await _multiplayerProvider.JoinGame(joinCode);
-            EventSystem.Broadcast(new StartGameSessionEvent());
+            try
+            {
+                string joinCode = await _multiplayerProvider.StartGame();
+                _lobbyProvider.SetGameJoinCode(joinCode);
+                EventSystem.Broadcast(new StartGameSessionEvent());
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw e;
+            }
         }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-            throw e;
-        }
-    }
 
-    private void OnApplicationQuit()
-    {
-        if(_lobbyProvider.IsJoinedToLobby)
+        public async void JoinGameSession(string joinCode)
         {
-            _lobbyProvider.LeaveLobby();
+            try
+            {
+                await _multiplayerProvider.JoinGame(joinCode);
+                EventSystem.Broadcast(new StartGameSessionEvent());
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw e;
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (_lobbyProvider.IsJoinedToLobby)
+            {
+                _lobbyProvider.LeaveLobby();
+            }
         }
     }
 }

@@ -1,12 +1,15 @@
 using UnityEngine;
 using Zenject;
 
-public class LobbyMenuHandleInstaller : MonoInstaller
+namespace SurviveTogether.UI
 {
-    [SerializeField] private LobbyMenuHandler _lobbyHandler;
-
-    public override void InstallBindings()
+    public class LobbyMenuHandleInstaller : MonoInstaller
     {
-        Container.Bind<LobbyMenuHandler>().FromInstance(_lobbyHandler).AsSingle();
+        [SerializeField] private LobbyMenuHandler _lobbyHandler;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<LobbyMenuHandler>().FromInstance(_lobbyHandler).AsSingle();
+        }
     }
 }

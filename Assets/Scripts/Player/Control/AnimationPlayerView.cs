@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SurviveTogether.Player
+namespace SurviveTogether.Players
 {
     [RequireComponent(typeof(Animator))]
     public class AnimationPlayerView : MonoBehaviour, IPlayerView

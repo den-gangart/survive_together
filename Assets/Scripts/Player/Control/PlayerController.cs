@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Zenject;
+using SurviveTogether.Players.InputHandle;
 
-namespace SurviveTogether.Player
+namespace SurviveTogether.Players
 {
     [RequireComponent(typeof(IPlayerView))]
     [RequireComponent(typeof(IPlayerMovement))]

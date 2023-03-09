@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerNameManager : Singleton<PlayerNameManager>
+namespace SurviveTogether.Players
 {
-    private PlayerNameData _playerNameData;
-    public string PlayerName { get { return _playerNameData.PlayerName; } }
-
-    protected override void OnAwake()
+    public class PlayerNameManager : Singleton<PlayerNameManager>
     {
-        _playerNameData = new PlayerNameData();
-        EventSystem.AddEventListener<NameChangeEvent>(OnNameChanged);
-    }
+        private PlayerNameData _playerNameData;
+        public string PlayerName { get { return _playerNameData.PlayerName; } }
 
-    private void OnDestroy()
-    {
-        EventSystem.RemoveEventListener<NameChangeEvent>(OnNameChanged);
-    }
+        protected override void OnAwake()
+        {
+            _playerNameData = new PlayerNameData();
+            EventSystem.AddEventListener<NameChangeEvent>(OnNameChanged);
+        }
 
-    private void OnNameChanged(NameChangeEvent nameChangeEvent)
-    {
-        _playerNameData.ChangeName(nameChangeEvent.name);
+        private void OnDestroy()
+        {
+            EventSystem.RemoveEventListener<NameChangeEvent>(OnNameChanged);
+        }
+
+        private void OnNameChanged(NameChangeEvent nameChangeEvent)
+        {
+            _playerNameData.ChangeName(nameChangeEvent.name);
+        }
     }
 }

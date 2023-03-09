@@ -2,33 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveCamera : MonoBehaviour
+namespace SurviveTogether.GameField
 {
-    public float speed = 0.5f;
-
-    private Vector3 startPosition;
-    private bool moving;
-
-
-    private void Update()
+    public class MoveCamera : MonoBehaviour
     {
-        if(Input.GetMouseButtonDown(1))
-        {
-            startPosition = Input.mousePosition;
-            moving = true;
-        }
+        public float speed = 0.5f;
 
-        if(Input.GetMouseButtonUp(1) && moving)
-        {
-            moving = false;
-        }
+        private Vector3 startPosition;
+        private bool moving;
 
-        if (moving)
+
+        private void Update()
         {
-            Vector3 position = Camera.main.ScreenToViewportPoint(Input.mousePosition - startPosition);
-            Vector3 move = new Vector3(position.x * speed, position.y * speed, 0);
-            transform.Translate(move, Space.Self);
+            if (Input.GetMouseButtonDown(1))
+            {
+                startPosition = Input.mousePosition;
+                moving = true;
+            }
+
+            if (Input.GetMouseButtonUp(1) && moving)
+            {
+                moving = false;
+            }
+
+            if (moving)
+            {
+                Vector3 position = Camera.main.ScreenToViewportPoint(Input.mousePosition - startPosition);
+                Vector3 move = new Vector3(position.x * speed, position.y * speed, 0);
+                transform.Translate(move, Space.Self);
+            }
+
         }
-           
     }
 }

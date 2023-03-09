@@ -1,4 +1,7 @@
-public static class PlayerPrefsKeys
+namespace SurviveTogether.Data
 {
-    public const string PLAYER_NAME = "PlayerName";
+    public static class PlayerPrefsKeys
+    {
+        public const string PLAYER_NAME = "PlayerName";
+    }
 }

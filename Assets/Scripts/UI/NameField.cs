@@ -2,24 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using SurviveTogether.Players;
 
-public class NameField : MonoBehaviour
+namespace SurviveTogether.UI
 {
-    [SerializeField] private TMP_InputField _inputField;
-    private string _currentName;
-
-    private void Start()
+    public class NameField : MonoBehaviour
     {
-        _currentName = PlayerNameManager.Instance.PlayerName;
-        _inputField.text = _currentName;
-        _inputField.onEndEdit.AddListener(OnEndEdit);
-    }
+        [SerializeField] private TMP_InputField _inputField;
+        private string _currentName;
 
-    private void OnEndEdit(string newName)
-    {
-        if(_currentName != newName)
+        private void Start()
         {
-            EventSystem.Broadcast(new NameChangeEvent { name = newName });
+            _currentName = PlayerNameManager.Instance.PlayerName;
+            _inputField.text = _currentName;
+            _inputField.onEndEdit.AddListener(OnEndEdit);
+        }
+
+        private void OnEndEdit(string newName)
+        {
+            if (_currentName != newName)
+            {
+                EventSystem.Broadcast(new NameChangeEvent { name = newName });
+            }
         }
     }
 }

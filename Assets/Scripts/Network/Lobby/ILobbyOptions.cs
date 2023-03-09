@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Lobbies;
+using SurviveTogether.Data;
 
-public interface ILobbyOptions
+namespace SurviveTogether.Network
 {
-    JoinLobbyByCodeOptions GetJoinLobbyByCodeOptions();
-    JoinLobbyByIdOptions GetJoinLobbyByIdOptions();
-    CreateLobbyOptions GetCreateLobbyOptions(bool isPrivate);
-    UpdateLobbyOptions GetUpdateLobbyOptions(params LobbyCustomData[] lobbyCustomData);
-    Player GetPlayerInfo();
+    public interface ILobbyOptions
+    {
+        JoinLobbyByCodeOptions GetJoinLobbyByCodeOptions();
+        JoinLobbyByIdOptions GetJoinLobbyByIdOptions();
+        CreateLobbyOptions GetCreateLobbyOptions(bool isPrivate);
+        UpdateLobbyOptions GetUpdateLobbyOptions(params LobbyCustomData[] lobbyCustomData);
+        Player GetPlayerInfo();
+    }
 }

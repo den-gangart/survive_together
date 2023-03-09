@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.Services.Lobbies.Models;
+using SurviveTogether.Data;
 
-public class PlayerLobbyComponent : MonoBehaviour
+namespace SurviveTogether.UI
 {
-    [SerializeField] private TextMeshProUGUI _playerNameText;
-    [SerializeField] private TextMeshProUGUI _ownerStatusText;
-
-    public void InitizalizePlayerInfo(Player player, bool isOwner)
+    public class PlayerLobbyComponent : MonoBehaviour
     {
-        PlayerDataObject playerData;
+        [SerializeField] private TextMeshProUGUI _playerNameText;
+        [SerializeField] private TextMeshProUGUI _ownerStatusText;
 
-        if (player.Data.TryGetValue(PlayerDataKeys.PLAYER_NAME, out playerData))
+        public void InitizalizePlayerInfo(Player player, bool isOwner)
         {
-            _playerNameText.text = playerData.Value;
-        }
+            PlayerDataObject playerData;
 
-        _ownerStatusText.gameObject.SetActive(isOwner);
+            if (player.Data.TryGetValue(PlayerDataKeys.PLAYER_NAME, out playerData))
+            {
+                _playerNameText.text = playerData.Value;
+            }
+
+            _ownerStatusText.gameObject.SetActive(isOwner);
+        }
     }
 }

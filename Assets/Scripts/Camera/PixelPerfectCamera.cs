@@ -2,28 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PixelPerfectCamera : MonoBehaviour
+namespace SurviveTogether.GameField
 {
-
-    public static float pixelToUnits = 1f;
-    public static float scale = 1f;
-
-    public Vector2 nativeResolution = new Vector2(160, 144);
-
-    void Awake()
+    public class PixelPerfectCamera : MonoBehaviour
     {
-        var camera = GetComponent<Camera>();
 
-        if (camera.orthographic)
+        public static float pixelToUnits = 1f;
+        public static float scale = 1f;
+
+        public Vector2 nativeResolution = new Vector2(160, 144);
+
+        void Awake()
         {
-            var direction = Screen.height;
-            var resolution = nativeResolution.y;
+            var camera = GetComponent<Camera>();
 
-            scale = direction / resolution;
-            pixelToUnits *= scale;
+            if (camera.orthographic)
+            {
+                var direction = Screen.height;
+                var resolution = nativeResolution.y;
 
-            camera.orthographicSize = (direction / 2.0f) / pixelToUnits;
+                scale = direction / resolution;
+                pixelToUnits *= scale;
+
+                camera.orthographicSize = (direction / 2.0f) / pixelToUnits;
+            }
         }
-    }
 
+    }
 }

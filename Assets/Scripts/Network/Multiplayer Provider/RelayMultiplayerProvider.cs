@@ -8,41 +8,44 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
-public class RelayMultiplayerProvider: IMultiplayerProviderWithCode
+namespace SurviveTogether.Network
 {
-    private const int MAX_CONNECTIONS = 3;
-    private const string CONNECTION_TYPE = "dtls";
-
-    public async Task<string> StartGame()
+    public class RelayMultiplayerProvider : IMultiplayerProviderWithCode
     {
-        try
-        {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MAX_CONNECTIONS);
-            RelayServerData relayServerData = new RelayServerData(allocation, CONNECTION_TYPE);
-            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-            NetworkManager.Singleton.StartHost();
-            return joinCode;
-        } 
-        catch (RelayServiceException e)
-        {
-            Debug.LogError(e);
-            return null;
-        }
-    }
+        private const int MAX_CONNECTIONS = 3;
+        private const string CONNECTION_TYPE = "dtls";
 
-    public async Task JoinGame(string joinCode)
-    {
-        try
+        public async Task<string> StartGame()
         {
-            JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
-            RelayServerData relayServerData = new RelayServerData(allocation, CONNECTION_TYPE);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-            NetworkManager.Singleton.StartClient();
+            try
+            {
+                Allocation allocation = await RelayService.Instance.CreateAllocationAsync(MAX_CONNECTIONS);
+                RelayServerData relayServerData = new RelayServerData(allocation, CONNECTION_TYPE);
+                string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+                NetworkManager.Singleton.StartHost();
+                return joinCode;
+            }
+            catch (RelayServiceException e)
+            {
+                Debug.LogError(e);
+                return null;
+            }
         }
-        catch (RelayServiceException e)
+
+        public async Task JoinGame(string joinCode)
         {
-            Debug.LogError(e);
+            try
+            {
+                JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+                RelayServerData relayServerData = new RelayServerData(allocation, CONNECTION_TYPE);
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+                NetworkManager.Singleton.StartClient();
+            }
+            catch (RelayServiceException e)
+            {
+                Debug.LogError(e);
+            }
         }
     }
 }

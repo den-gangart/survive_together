@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace SurviveTogether.Player
+namespace SurviveTogether.Players
 {
     public interface IPlayerView
     {

@@ -1,11 +1,14 @@
-public class LobbyCustomData
+namespace SurviveTogether.Data
 {
-    public readonly string key;
-    public readonly string value;
-
-    public LobbyCustomData(string key, string value)
+    public class LobbyCustomData
     {
-        this.key = key;
-        this.value = value;
+        public readonly string key;
+        public readonly string value;
+
+        public LobbyCustomData(string key, string value)
+        {
+            this.key = key;
+            this.value = value;
+        }
     }
 }

@@ -1,5 +1,8 @@
-public static class AxisInputKeys
+namespace SurviveTogether.Players.InputHandle
 {
-    public const string VERTICAL = "Vertical";
-    public const string HORIZONTAL = "Horizontal";
+    public static class AxisInputKeys
+    {
+        public const string VERTICAL = "Vertical";
+        public const string HORIZONTAL = "Horizontal";
+    }
 }

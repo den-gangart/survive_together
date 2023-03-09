@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class PlayerMobileInput : IPlayerInput
+namespace SurviveTogether.Players.InputHandle
 {
-    ScreenInput _screenInput;
-    private Joystick _joystick;
-    public void Setup(ScreenInput screenInput)
+    public class PlayerMobileInput : IPlayerInput
     {
-        _screenInput = screenInput;
-        _joystick = _screenInput.Joystick; 
-    }
-
-    public bool GetAttackInput()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Vector2 GetMovementInput()
-    {
-        if (_joystick != null)
+        ScreenInput _screenInput;
+        private Joystick _joystick;
+        public void Setup(ScreenInput screenInput)
         {
-            return new Vector2(_joystick.Horizontal, _joystick.Vertical);
+            _screenInput = screenInput;
+            _joystick = _screenInput.Joystick;
         }
 
-        return Vector2.zero;
+        public bool GetAttackInput()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Vector2 GetMovementInput()
+        {
+            if (_joystick != null)
+            {
+                return new Vector2(_joystick.Horizontal, _joystick.Vertical);
+            }
+
+            return Vector2.zero;
+        }
     }
 }

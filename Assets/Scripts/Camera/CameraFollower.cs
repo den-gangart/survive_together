@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-[RequireComponent(typeof(Camera))]
-public class CameraFollower : MonoBehaviour
+namespace SurviveTogether.GameField
 {
-    [SerializeField] private float _timeSpeed;
-    private Transform _target;
-
-    public void Start()
+    [RequireComponent(typeof(Camera))]
+    public class CameraFollower : MonoBehaviour
     {
-        _target = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.transform;
-    }
+        [SerializeField] private float _timeSpeed;
+        private Transform _target;
 
-    private void FixedUpdate()
-    {
-        if(_target != null)
+        public void Start()
         {
-            Vector3 nextPosition = Vector3.Lerp(transform.position, _target.position, _timeSpeed);
-            nextPosition.z = transform.position.z;
+            _target = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.transform;
+        }
 
-            transform.position = nextPosition;
+        private void FixedUpdate()
+        {
+            if (_target != null)
+            {
+                Vector3 nextPosition = Vector3.Lerp(transform.position, _target.position, _timeSpeed);
+                nextPosition.z = transform.position.z;
+
+                transform.position = nextPosition;
+            }
         }
     }
 }

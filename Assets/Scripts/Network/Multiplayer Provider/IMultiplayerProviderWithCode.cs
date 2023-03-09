@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public interface IMultiplayerProviderWithCode
+namespace SurviveTogether.Network
 {
-    Task<string> StartGame();
-    Task JoinGame(string joinCode);
+    public interface IMultiplayerProviderWithCode
+    {
+        Task<string> StartGame();
+        Task JoinGame(string joinCode);
+    }
 }

@@ -3,75 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIWindowManager : MonoBehaviour
+namespace SurviveTogether.UI
 {
-    [SerializeField] private Popup _base;
-    [SerializeField] private Popup _errorMessage;
-
-    private List<Popup> _popupSequence;
-
-    private void Start()
+    public class UIWindowManager : MonoBehaviour
     {
-        _popupSequence = new List<Popup>();
+        [SerializeField] private Popup _base;
+        [SerializeField] private Popup _errorMessage;
 
-       if (_base != null)
-       {
-            OpenWindow(_base);
-       }
-    }
+        private List<Popup> _popupSequence;
 
-    public void OpenWindow(Popup popup)
-    {
-        if (SequenceContains(popup))
+        private void Start()
         {
-            throw new ArgumentException("Popup has already opened");
-        }
+            _popupSequence = new List<Popup>();
 
-        if (_popupSequence.Count != 0)
-        {
-            _popupSequence[_popupSequence.Count - 1].Close();
-        }
-
-        popup.Open();
-        popup.PopupClose += CloseWindow;
-        _popupSequence.Add(popup);
-    }
-
-    public void CloseWindow(Popup popup)
-    {
-        if(!SequenceContains(popup))
-        {
-            throw new ArgumentException("Opened popup doesn`t exist");
-        }
-
-        popup.Close();
-        popup.PopupClose -= CloseWindow;
-        _popupSequence.Remove(popup);
-
-        if (_popupSequence.Count != 0)
-        {
-            _popupSequence[_popupSequence.Count - 1].Open();
-        }
-    }
-
-    public void ShowErrorMessage()
-    {
-        _errorMessage.Open();
-        _popupSequence.Add(_errorMessage);
-    }
-
-    public void ReturnToBase()
-    {
-        if(_base != null)
-        {
-            foreach(var popup in _popupSequence)
+            if (_base != null)
             {
-               if(popup != _base) CloseWindow(popup);
+                OpenWindow(_base);
             }
         }
 
-        _base.Open();
-    }
+        public void OpenWindow(Popup popup)
+        {
+            if (SequenceContains(popup))
+            {
+                throw new ArgumentException("Popup has already opened");
+            }
 
-    private bool SequenceContains(Popup popup) => _popupSequence.Contains(popup);
+            if (_popupSequence.Count != 0)
+            {
+                _popupSequence[_popupSequence.Count - 1].Close();
+            }
+
+            popup.Open();
+            popup.PopupClose += CloseWindow;
+            _popupSequence.Add(popup);
+        }
+
+        public void CloseWindow(Popup popup)
+        {
+            if (!SequenceContains(popup))
+            {
+                throw new ArgumentException("Opened popup doesn`t exist");
+            }
+
+            popup.Close();
+            popup.PopupClose -= CloseWindow;
+            _popupSequence.Remove(popup);
+
+            if (_popupSequence.Count != 0)
+            {
+                _popupSequence[_popupSequence.Count - 1].Open();
+            }
+        }
+
+        public void ShowErrorMessage()
+        {
+            _errorMessage.Open();
+            _popupSequence.Add(_errorMessage);
+        }
+
+        public void ReturnToBase()
+        {
+            if (_base != null)
+            {
+                foreach (var popup in _popupSequence)
+                {
+                    if (popup != _base) CloseWindow(popup);
+                }
+            }
+
+            _base.Open();
+        }
+
+        private bool SequenceContains(Popup popup) => _popupSequence.Contains(popup);
+    }
 }

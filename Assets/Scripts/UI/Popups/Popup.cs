@@ -4,17 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Popup : MonoBehaviour
+namespace SurviveTogether.UI
 {
-    public event Action<Popup> PopupClose;
-
-    protected virtual void OnStart() { }
-
-    public virtual void ClosePopup()
+    public class Popup : MonoBehaviour
     {
-        PopupClose?.Invoke(this);
-    }
+        public event Action<Popup> PopupClose;
 
-    public virtual void Close() { }
-    public virtual void Open() { }
+        protected virtual void OnStart() { }
+
+        public virtual void ClosePopup()
+        {
+            PopupClose?.Invoke(this);
+        }
+
+        public virtual void Close() { }
+        public virtual void Open() { }
+    }
 }

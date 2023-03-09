@@ -6,16 +6,20 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using System;
 
-public class JoinLobbyComponent : MonoBehaviour
+namespace SurviveTogether.UI
 {
-    [SerializeField] private TextMeshProUGUI _lobbyNameText;
-    [SerializeField] private TextMeshProUGUI _playerCountText;
-    [SerializeField] private Button _joinButton;
+    public class JoinLobbyComponent : MonoBehaviour
+    {
+        [SerializeField] private TextMeshProUGUI _lobbyNameText;
+        [SerializeField] private TextMeshProUGUI _playerCountText;
+        [SerializeField] private Button _joinButton;
 
-    public void InitizalizeLobbyInfo(Lobby lobby, Action<string> JoinLobby)
-    {;
-        _lobbyNameText.text = lobby.Name;
-        _playerCountText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
-        _joinButton.onClick.AddListener(delegate { JoinLobby(lobby.Id); });
+        public void InitizalizeLobbyInfo(Lobby lobby, Action<string> JoinLobby)
+        {
+            ;
+            _lobbyNameText.text = lobby.Name;
+            _playerCountText.text = lobby.Players.Count + "/" + lobby.MaxPlayers;
+            _joinButton.onClick.AddListener(delegate { JoinLobby(lobby.Id); });
+        }
     }
 }

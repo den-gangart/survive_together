@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using Tween;
 
-[RequireComponent(typeof(TweenPlayer))]
-public class PopupWithTween : Popup
+namespace SurviveTogether.UI
 {
-    private TweenPlayer _tweenPlayer;
-    private const string SHOW_ANIMATION = "Show";
-    private const string HIDE_ANIMATION = "Hide";
-
-    private void Start()
+    [RequireComponent(typeof(TweenPlayer))]
+    public class PopupWithTween : Popup
     {
-        _tweenPlayer = GetComponent<TweenPlayer>();
-        OnStart();
-    }
+        private TweenPlayer _tweenPlayer;
+        private const string SHOW_ANIMATION = "Show";
+        private const string HIDE_ANIMATION = "Hide";
 
-    public override void Open()
-    {
-        _tweenPlayer.Play(SHOW_ANIMATION);
-        base.Open();
-    }
+        private void Start()
+        {
+            _tweenPlayer = GetComponent<TweenPlayer>();
+            OnStart();
+        }
 
-    public override void Close()
-    {
-        _tweenPlayer.Play(HIDE_ANIMATION);
-        base.Close();
+        public override void Open()
+        {
+            _tweenPlayer.Play(SHOW_ANIMATION);
+            base.Open();
+        }
+
+        public override void Close()
+        {
+            _tweenPlayer.Play(HIDE_ANIMATION);
+            base.Close();
+        }
     }
 }

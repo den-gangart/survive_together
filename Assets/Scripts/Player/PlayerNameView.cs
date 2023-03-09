@@ -6,7 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Collections;
 
-namespace SurviveTogether.Player
+namespace SurviveTogether.Players
 {
     public class PlayerNameView : NetworkBehaviour
     {

@@ -2,34 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyCheckTimers : MonoBehaviour
+namespace SurviveTogether.Network
 {
-    [SerializeField] private float _lobbyHeartBeatTime;
-    [SerializeField] private float _updateLobbyTime;
-
-    private Timer _statusTimer;
-    private Timer _updateTimer;
-
-    private UnityLobbyProvider _lobbyProvider => NetworkSystem.Instance.LobbyProvider;
-
-    private void Start()
+    public class LobbyCheckTimers : MonoBehaviour
     {
-        _statusTimer = new(_lobbyHeartBeatTime);
-        _statusTimer.OnTimerDone += _lobbyProvider.HeartBeat;
+        [SerializeField] private float _lobbyHeartBeatTime;
+        [SerializeField] private float _updateLobbyTime;
 
-        _updateTimer = new(_updateLobbyTime);
-        _updateTimer.OnTimerDone += _lobbyProvider.UpdateLobby;
-    }
+        private Timer _statusTimer;
+        private Timer _updateTimer;
 
-    private void Update()
-    {
-        if (_lobbyProvider.IsJoinedToLobby)
+        private UnityLobbyProvider _lobbyProvider => NetworkSystem.Instance.LobbyProvider;
+
+        private void Start()
         {
-            if(_lobbyProvider.IsOwner)
+            _statusTimer = new(_lobbyHeartBeatTime);
+            _statusTimer.OnTimerDone += _lobbyProvider.HeartBeat;
+
+            _updateTimer = new(_updateLobbyTime);
+            _updateTimer.OnTimerDone += _lobbyProvider.UpdateLobby;
+        }
+
+        private void Update()
+        {
+            if (_lobbyProvider.IsJoinedToLobby)
             {
-                _statusTimer.Tick(Time.deltaTime);
+                if (_lobbyProvider.IsOwner)
+                {
+                    _statusTimer.Tick(Time.deltaTime);
+                }
+                _updateTimer.Tick(Time.deltaTime);
             }
-            _updateTimer.Tick(Time.deltaTime);
         }
     }
 }
