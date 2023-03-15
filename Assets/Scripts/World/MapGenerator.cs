@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
     public void MakeMap()
     {
         map.NewMap(mapWidth, mapHeight);
-        map.CreateIsland(
+        map.CreateMapByParams(
             erodePercent,
             erodeIterations,
             densityTreePlantations,
@@ -52,7 +52,8 @@ public class MapGenerator : MonoBehaviour
             mountainDensity,
             townsDencity,
             cavesDencity,
-            lakePercent
+            lakePercent,
+            mapParam
             );
         grid.CreateGrid(map, mapParam, mapContainer);
         SetPositionToCastle(map.CastleTile.id);

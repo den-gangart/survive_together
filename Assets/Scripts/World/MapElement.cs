@@ -18,7 +18,10 @@ public class MapElement
     public int id = 0;
     [NonSerialized] public MapElement[] tileSide = new MapElement[4];
     public int tileTypeGroupId;
-    public int TileId;
+    public int tileId;
+    public int bgTileId;
+    public bool isUsabl;
+    public bool isInteractable;
 
     public void AddTileToSide(TileSides side, MapElement tile)
     {

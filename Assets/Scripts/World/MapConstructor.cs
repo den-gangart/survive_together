@@ -12,13 +12,12 @@ public enum TileType
     Mountains = 18,
     Towns = 19,
     Castle = 20,
-    Lake = 21
+    Cave = 21,
 }
 
 [System.Serializable]
 public class MapConstructor
 {
-
     public MapElement[] tiles;
     public int columns;
     public int rows;
@@ -57,33 +56,42 @@ public class MapConstructor
         CreateTiles();
     }
 
-    public void CreateIsland(
+    public void CreateMapByParams(
         float erodePercent,
         int erodeIterations,
         float treePercent,
         float hillPercent,
         float mountainPercent,
         float townPercent,
-        float monsterPercent,
-        float lakePercent
+        float CavePercent,
+        float lakePercent,
+        MapParamInfo mapParam
         )
     {
-        DecorateTiles(LandTiles, lakePercent, TileType.Empty);
+        DecorateTiles(LandTiles, lakePercent, TileType.Empty, mapParam);
 
         for (var i = 0; i < erodeIterations; i++)
         {
-            DecorateTiles(CoastTiles, erodePercent, TileType.Empty);
+            DecorateTiles(CoastTiles, erodePercent, TileType.Empty, mapParam);
         }
 
         var openTiles = LandTiles;
         RandomizeTileArray(openTiles);
         openTiles[0].tileTypeGroupId = (int)TileType.Castle;
 
-        DecorateTiles(LandTiles, treePercent, TileType.Tree);
-        DecorateTiles(LandTiles, hillPercent, TileType.Hills);
-        DecorateTiles(LandTiles, mountainPercent, TileType.Mountains);
-        DecorateTiles(LandTiles, townPercent, TileType.Towns);
-        DecorateTiles(LandTiles, monsterPercent, TileType.Lake);
+        DecorateTiles(LandTiles, treePercent, TileType.Tree, mapParam);
+        DecorateTiles(LandTiles, hillPercent, TileType.Hills, mapParam);
+        DecorateTiles(LandTiles, mountainPercent, TileType.Mountains, mapParam);
+        DecorateTiles(LandTiles, townPercent, TileType.Towns, mapParam);
+        DecorateTiles(LandTiles, CavePercent, TileType.Cave, mapParam);
+
+        /* Empty = 22,
+           Tree = 16,
+           Hills = 17,
+           Mountains = 18,
+           Towns = 19,
+           Castle = 20,
+           Cave = 21, */
     }
 
     private void CreateTiles()
@@ -133,7 +141,7 @@ public class MapConstructor
         }
     }
 
-    public void DecorateTiles(MapElement[] tiles, float percent, TileType type)
+    public void DecorateTiles(MapElement[] tiles, float percent, TileType type, MapParamInfo mapParam)
     {
         var total = Mathf.FloorToInt(tiles.Length * percent);
 
@@ -141,16 +149,19 @@ public class MapConstructor
 
         for (var i = 0; i < total; i++)
         {
-            var tile = tiles[i];
-            if (type == TileType.Empty)
-            {
-                tile.ClearTileSide();
-            }
-            tile.tileTypeGroupId = (int)type;
+            tiles[i] = DecorateTileParams(tiles[i], type, mapParam); 
+            
         }
-    }
+      /*   public int id = 0;
+    [NonSerialized] public MapElement[] tileSide = new MapElement[4];
+    public int tileTypeGroupId;
+    public int tileId;
+    public int bgTileId;
+    public bool isUsabl;
+    public bool isInteractable;*/
+}
 
-    public void RandomizeTileArray(MapElement[] tiles)
+     void RandomizeTileArray(MapElement[] tiles)
     {
         for (var i = 0; i < tiles.Length; i++)
         {
@@ -159,6 +170,61 @@ public class MapConstructor
             tiles[i] = tiles[r];
             tiles[r] = tmp;
         }
+    }
+
+    MapElement DecorateTileParams(MapElement tile,TileType type, MapParamInfo mapParam)
+    {
+       
+        var prefBgTileId = -1;
+        var prefisInteractable = false;
+
+        tile.tileTypeGroupId = (int)type;
+      
+        var spriteCollection = mapParam.spriteCollection[tile.tileTypeGroupId].SpritesList;
+        var prefTileId = spriteCollection.Count > 0 ? Random.Range(0, spriteCollection.Count - 1): 0;
+
+        var grassCollection = mapParam.spriteCollection[(int)TileType.Grass].SpritesList;
+        prefBgTileId = grassCollection.Count > 0 ? Random.Range(0, grassCollection.Count -1): 0;
+
+      
+
+        switch (type)
+        {
+            case TileType.Empty:
+                tile.ClearTileSide();
+                prefTileId = -1;
+                prefBgTileId = -1;
+                break;
+            case TileType.Grass:
+                prefBgTileId = -1;
+                break;
+            case TileType.Tree:
+                prefisInteractable = true;
+                break;
+            case TileType.Hills:
+                break;
+            case TileType.Mountains:
+                break;
+            case TileType.Towns:
+                prefisInteractable = true;
+                break;
+            case TileType.Castle:
+                prefisInteractable = true;
+                break;
+            case TileType.Cave:
+                prefisInteractable = true;
+                break;
+            default:
+                break;
+        }
+       
+        
+        tile.tileId = prefTileId; 
+        tile.bgTileId = prefBgTileId;
+        tile.isUsabl = false;
+        tile.isInteractable = prefisInteractable;
+
+        return tile;
     }
 
 }

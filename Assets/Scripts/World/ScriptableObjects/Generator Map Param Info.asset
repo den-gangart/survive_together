@@ -106,3 +106,7 @@ MonoBehaviour:
   - SpritesList:
     - {fileID: 21300000, guid: 39456b49818baa949bff75adb24bcfe1, type: 3}
     - {fileID: -1031621322, guid: d688ce74dbdcf1047825c385664d076d, type: 3}
+  - SpritesList:
+    - {fileID: 21300000, guid: 489bb6d96cffd514d8660526699bd526, type: 3}
+    - {fileID: 21300000, guid: a4e9192ef9b4ee743a627a9338ffc51e, type: 3}
+    - {fileID: 21300000, guid: 6b51172df72cd104f84b7ce4d1f97157, type: 3}

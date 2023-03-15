@@ -33,9 +33,8 @@ public class LevelLoader : MonoBehaviour
 
     public MapConstructor MakeMap()
        {
-        map = new MapConstructor();
         map.NewMap(randomMapParamData.mapWidth, randomMapParamData.mapHeight);
-        map.CreateIsland(
+        map.CreateMapByParams(
            randomMapParamData.erodePercent,
            randomMapParamData.erodeIterations,
           randomMapParamData.densityTreePlantations,
@@ -43,9 +42,9 @@ public class LevelLoader : MonoBehaviour
            randomMapParamData.mountainDensity,
            randomMapParamData.townsDencity,
            randomMapParamData.cavesDencity,
-           randomMapParamData.lakePercent
+           randomMapParamData.lakePercent,
+           mapParam
            );
-
         return map;
       }
 }

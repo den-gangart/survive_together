@@ -23,30 +23,33 @@ public class GridConstructor
             go.name = "Tile " + i;
             go.transform.SetParent(mapContainer.transform);
             go.transform.position = new Vector3(newX, newY, 0);
-
             var tile = mapObject.tiles[i];
-            var spriteID = tile.tileTypeGroupId;
-
-            if (spriteID >= 0)
-            {
-                var sr = go.GetComponent<SpriteRenderer>();
-                var chSp = go.GetComponentInChildren<SpriteRenderer>();
-                
-                //var tileConfigurator = go.GetComponent<TileConfiguration>(); 
-                // TODO: use tile method configeration
-                var spriteCollection = mapParam.spriteCollection[spriteID].SpritesList;
-                var randomSpriteId = Random.Range(0, spriteCollection.Count - 1);
-                sr.sprite = spriteCollection[randomSpriteId];
-               // chSp.sprite = spriteCollection[randomSpriteId];
-               // sr.sprite = mapParam.spriteCollection[15].SpritesList[0];
-                tile.TileId = randomSpriteId;
-            }
-
+            InitialTileByParams(go, tile , mapParam);
+            
             if (column == (maxColumns - 1))
             {
                 row++;
             }
         }
+    }
+
+    private void InitialTileByParams(GameObject currentTileObject, MapElement tile , MapParamInfo mapParam)
+    {
+       var currCollider =  currentTileObject.AddComponent<BoxCollider2D>();
+        var spriteCollection = mapParam.spriteCollection[tile.tileTypeGroupId].SpritesList;
+        var bgSr = currentTileObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        var sr = currentTileObject.GetComponent<SpriteRenderer>();
+
+        if (tile.tileId != -1)
+        {
+            sr.sprite = spriteCollection[tile.tileId];
+        }
+        if (tile.bgTileId!= -1) {
+            var grassCollection = mapParam.spriteCollection[(int)TileType.Grass].SpritesList;
+            bgSr.sprite = grassCollection[tile.bgTileId];
+        }
+        currCollider.size = mapParam.tileSize;
+        currCollider.isTrigger = tile.isInteractable;
     }
 
     public void ClearMapContainer(GameObject mapContainer)
