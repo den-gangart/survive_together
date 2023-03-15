@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,5 +13,11 @@ public class MapParamInfo : ScriptableObject
     [Space]
     [Header("===== Map Sprites =====")]
     public Texture2D MapTexture;
-    public Sprite[] spriteCollection;
+    public List<serializableListSprite> spriteCollection = new List<serializableListSprite>();
+}
+
+[System.Serializable]
+public class serializableListSprite
+{
+    public List<UnityEngine.Sprite> SpritesList;
 }

@@ -170,8 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapContainer: {fileID: 1889476260}
   mapParam: {fileID: 11400000, guid: 1aa7ec86246d3e14ea0568ff48e428ba, type: 2}
-  mapWidth: 6
-  mapHeight: 12
+  mapWidth: 20
+  mapHeight: 20
   erodePercent: 0
   erodeIterations: 1
   densityTreePlantations: 0.3
@@ -180,6 +180,10 @@ MonoBehaviour:
   townsDencity: 0.05
   cavesDencity: 0.1
   lakePercent: 0.003
+  map:
+    tiles: []
+    columns: 0
+    rows: 0
 --- !u!1 &346799341
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &346799342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +214,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapContainer: {fileID: 1732918213}
-  mapParam: {fileID: 11400000, guid: 69ad422fe1b776443a0631e1e32846eb, type: 2}
+  mapParam: {fileID: 11400000, guid: 5af18f9f6abab9044915c166fb54de4d, type: 2}
+  randomMapParamData: {fileID: 11400000, guid: 4761a764189d76443ad721fe7e78bc52, type: 2}
+  map:
+    tiles: []
+    columns: 0
+    rows: 0
 --- !u!4 &346799343
 Transform:
   m_ObjectHideFlags: 0

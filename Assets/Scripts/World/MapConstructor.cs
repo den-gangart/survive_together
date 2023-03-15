@@ -5,7 +5,7 @@ using System.Linq;
 
 public enum TileType
 {
-    Empty = -1,
+    Empty = 22,
     Grass = 15,
     Tree = 16,
     Hills = 17,
@@ -15,6 +15,7 @@ public enum TileType
     Lake = 21
 }
 
+[System.Serializable]
 public class MapConstructor
 {
 
@@ -26,7 +27,7 @@ public class MapConstructor
     {
         get
         {
-            return tiles.Where(t => t.autotileID < (int)TileType.Grass).ToArray();
+            return tiles.Where(t => t.tileTypeGroupId < (int)TileType.Grass).ToArray();
         }
     }
 
@@ -34,7 +35,7 @@ public class MapConstructor
     {
         get
         {
-            return tiles.Where(t => t.autotileID == (int)TileType.Grass).ToArray();
+            return tiles.Where(t => t.tileTypeGroupId == (int)TileType.Grass).ToArray();
         }
     }
 
@@ -42,7 +43,7 @@ public class MapConstructor
     {
         get
         {
-            return tiles.FirstOrDefault(t => t.autotileID == (int)TileType.Castle);
+            return tiles.FirstOrDefault(t => t.tileTypeGroupId == (int)TileType.Castle);
         }
     }
 
@@ -76,7 +77,7 @@ public class MapConstructor
 
         var openTiles = LandTiles;
         RandomizeTileArray(openTiles);
-        openTiles[0].autotileID = (int)TileType.Castle;
+        openTiles[0].tileTypeGroupId = (int)TileType.Castle;
 
         DecorateTiles(LandTiles, treePercent, TileType.Tree);
         DecorateTiles(LandTiles, hillPercent, TileType.Hills);
@@ -145,7 +146,7 @@ public class MapConstructor
             {
                 tile.ClearTileSide();
             }
-            tile.autotileID = (int)type;
+            tile.tileTypeGroupId = (int)type;
         }
     }
 

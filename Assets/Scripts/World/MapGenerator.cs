@@ -54,7 +54,6 @@ public class MapGenerator : MonoBehaviour
             cavesDencity,
             lakePercent
             );
-        //Debug.Log("Created a new " + map.columns + "x" + map.rows + " map");
         grid.CreateGrid(map, mapParam, mapContainer);
         SetPositionToCastle(map.CastleTile.id);
     }

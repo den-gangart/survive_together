@@ -11,13 +11,14 @@ public enum TileSides
     Left,
     Top
 }
-
+[System.Serializable]
 public class MapElement
 {
 
     public int id = 0;
-    public MapElement[] tileSide = new MapElement[4];
-    public int autotileID;
+    [NonSerialized] public MapElement[] tileSide = new MapElement[4];
+    public int tileTypeGroupId;
+    public int TileId;
 
     public void AddTileToSide(TileSides side, MapElement tile)
     {
@@ -64,7 +65,7 @@ public class MapElement
         {
             sideValues.Append(tile == null ? "0" : "1");
         }
-        autotileID = Convert.ToInt32(sideValues.ToString(), 2);
+        tileTypeGroupId = Convert.ToInt32(sideValues.ToString(), 2);
     }
 
 }
