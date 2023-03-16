@@ -66,7 +66,7 @@ namespace SurviveTogether.Network
 
         public void CheckGameSessionStart()
         {
-            string joinCode = _hostLobby.Data[LobbyDataKeys.JOIN_CODE].Value;
+            string joinCode = GetLevelCustomData(LobbyDataKeys.JOIN_CODE);
             IsJoinedToGame = !IsOwner && !string.IsNullOrEmpty(joinCode);
 
             if (IsJoinedToGame)
@@ -132,10 +132,15 @@ namespace SurviveTogether.Network
             }
         }
 
-        public void SetGameJoinCode(string code)
+        public void SetLevelCustomData(string key, string data)
         {
-            LobbyCustomData lobbyCustomData = new LobbyCustomData(LobbyDataKeys.JOIN_CODE, code);
+            LobbyCustomData lobbyCustomData = new LobbyCustomData(key, data);
             UpdateLobbyData(null, lobbyCustomData);
+        }
+
+        public string GetLevelCustomData(string key)
+        {
+            return _hostLobby.Data[key].Value;
         }
 
         public async void UpdateLobbyData(Action<Lobby> lobbyUpdate, params LobbyCustomData[] lobbyCustomDatas)

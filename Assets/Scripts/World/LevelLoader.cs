@@ -1,50 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SurviveTogether.Data;
+using Zenject;
 
 public class LevelLoader : MonoBehaviour
 {
     [Space]
     [Header("===== Map Objects Link =====")]
-    public GameObject mapContainer;
-    public MapParamInfo mapParam;
+    [SerializeField] private GameObject _mapContainer;
+    [SerializeField] private MapParamInfo _mapParam;
+    [SerializeField] private RandomMapParamData _randomMapParamData;
 
-    public RandomMapParamData randomMapParamData;
+    [SerializeField] private MapConstructor _map;
+    [SerializeField] private GridConstructor _grid;
 
-    public MapConstructor map;
-    public GridConstructor grid;
+    [Inject] LevelDataManager _dataManager;
 
     void Start()
-    {
+    { 
         LoadMap();
-
-       // MakeMap();
     }
 
      void LoadMap()
     {
-        map = new MapConstructor();
-        grid = new GridConstructor();
-        var becaupMapObj = mapParam.mapData.LoadFromJson();
-        grid.CreateGrid(becaupMapObj, mapParam, mapContainer);
+        _map = _dataManager.GetCurrentLevel().mapData;
+        _grid = new GridConstructor();
 
+        _grid.CreateGrid(_map, _mapParam, _mapContainer);
     }
 
 
     public MapConstructor MakeMap()
        {
-        map.NewMap(randomMapParamData.mapWidth, randomMapParamData.mapHeight);
-        map.CreateMapByParams(
-           randomMapParamData.erodePercent,
-           randomMapParamData.erodeIterations,
-          randomMapParamData.densityTreePlantations,
-           randomMapParamData.hillsDensity,
-           randomMapParamData.mountainDensity,
-           randomMapParamData.townsDencity,
-           randomMapParamData.cavesDencity,
-           randomMapParamData.lakePercent,
-           mapParam
+        _map.NewMap(_randomMapParamData.mapWidth, _randomMapParamData.mapHeight);
+        _map.CreateMapByParams(
+           _randomMapParamData.erodePercent,
+           _randomMapParamData.erodeIterations,
+          _randomMapParamData.densityTreePlantations,
+           _randomMapParamData.hillsDensity,
+           _randomMapParamData.mountainDensity,
+           _randomMapParamData.townsDencity,
+           _randomMapParamData.cavesDencity,
+           _randomMapParamData.lakePercent,
+           _mapParam
            );
-        return map;
+        return _map;
       }
 }

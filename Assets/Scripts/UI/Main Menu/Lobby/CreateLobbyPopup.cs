@@ -19,6 +19,9 @@ namespace SurviveTogether.UI
         [SerializeField] private Button _buttonCreate;
         [SerializeField] private Button _buttonClose;
 
+        [Header(EditorTitles.OTHER)]
+        [SerializeField] private MapSelector _mapSelector;
+
         private const int _selectPlayerCountOffset = 2;
         [Inject] private LobbyMenuHandler _lobbyHandler;
 
@@ -37,6 +40,7 @@ namespace SurviveTogether.UI
             );
 
             _lobbyHandler.CreateLobby(lobbyParameters);
+            _mapSelector.FinishSelection();
         }
     }
 }
