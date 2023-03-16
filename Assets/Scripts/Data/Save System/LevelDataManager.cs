@@ -4,6 +4,7 @@ using UnityEngine;
 using SurviveTogether.Data;
 using Zenject;
 using System;
+using SurviveTogether.World;
 
 namespace SurviveTogether.Data
 {

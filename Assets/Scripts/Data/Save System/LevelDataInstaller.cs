@@ -1,5 +1,6 @@
 using UnityEngine;
 using Zenject;
+using SurviveTogether.World;
 
 namespace SurviveTogether.Data
 {
