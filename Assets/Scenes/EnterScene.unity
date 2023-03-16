@@ -409,6 +409,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6178176974659823201, guid: 773e1d0a75aa78343b12caee258fd459, type: 3}
+      propertyPath: NetworkConfig.RpcHashSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178176974659823201, guid: 773e1d0a75aa78343b12caee258fd459, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
       objectReference: {fileID: 3106670375862938400, guid: 4b4b8178518a5d74d9a0e87d5a29cb25, type: 3}

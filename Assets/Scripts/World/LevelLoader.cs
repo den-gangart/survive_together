@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SurviveTogether.World
 {
-    public class LevelLoader
+    public class LevelLoader: MonoBehaviour
     {
         [Space]
         [Header("===== Map Objects Link =====")]
@@ -17,12 +17,7 @@ namespace SurviveTogether.World
 
         [Inject] LevelDataManager _dataManager;
 
-        void Start()
-        {
-            LoadMap();
-        }
-
-        void LoadMap()
+        public void LoadMap()
         {
             _map = _dataManager.GetCurrentLevel().mapData;
             _grid = new GridConstructor();

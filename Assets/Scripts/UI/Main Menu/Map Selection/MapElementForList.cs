@@ -30,8 +30,8 @@ namespace SurviveTogether.UI
         public void InitizalizeAsExisted(string name, DateTime creationDate, DateTime modifyDate)
         {
             _mapNameText.text = name;
-            _dateCreateText.text = creationDate.ToShortDateString();
-            _dateModifyText.text = modifyDate.ToShortDateString();
+            _dateCreateText.text = $"Created: {creationDate.ToShortDateString()}";
+            _dateModifyText.text = $"Modified: {modifyDate.ToShortDateString()}";
         }
 
         public void InitizalizeAsNew(string defaultName)
