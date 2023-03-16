@@ -5,6 +5,7 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using SurviveTogether.Data;
 
 namespace SurviveTogether.Network
 {
@@ -35,8 +36,8 @@ namespace SurviveTogether.Network
             {
                 EventSystem.Broadcast(new ConnectEvent());
                 string joinCode = await _multiplayerProvider.StartGame();
-                _lobbyProvider.SetGameJoinCode(joinCode);
-                EventSystem.Broadcast(new StartGameSessionEvent());
+                _lobbyProvider.SetLevelCustomData(LobbyDataKeys.JOIN_CODE, joinCode);
+                EventSystem.Broadcast(new StartGameSessionEvent() { lobby = _lobbyProvider.HostLobby });
             }
             catch (Exception e)
             {
@@ -51,7 +52,7 @@ namespace SurviveTogether.Network
             {
                 EventSystem.Broadcast(new ConnectEvent());
                 await _multiplayerProvider.JoinGame(joinCode);
-                EventSystem.Broadcast(new StartGameSessionEvent());
+                EventSystem.Broadcast(new StartGameSessionEvent() { lobby = _lobbyProvider.HostLobby});
             }
             catch (Exception e)
             {

@@ -19,6 +19,10 @@ public class CreateLobbyEvent : GameEvent
 
 public class ConnectEvent: GameEvent { }
 public class LeftLobbyEvent: GameEvent {}
-public class StartGameSessionEvent : GameEvent {}
+public class StartGameSessionEvent : GameEvent 
+{
+    public Lobby lobby;
+}
+
 public class SignInEvent: GameEvent {}
 public class SignOutEvent: GameEvent {}
