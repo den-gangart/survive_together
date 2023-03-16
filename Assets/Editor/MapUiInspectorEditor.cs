@@ -3,37 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
-[CustomEditor(typeof(MapGenerator))]
-public class MapUiInspectorEditor : Editor
+namespace SurviveTogether.World
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(MapGenerator))]
+    public class MapUiInspectorEditor : Editor
     {
-        DrawDefaultInspector();
-
-        var script = (MapGenerator)target;
-        
-        if(GUILayout.Button("Generate Map"))
+        public override void OnInspectorGUI()
         {
-            if(Application.isPlaying)
+            DrawDefaultInspector();
+
+            var script = (MapGenerator)target;
+
+            if (GUILayout.Button("Generate Map"))
             {
-                script.MakeMap();
+                if (Application.isPlaying)
+                {
+                    script.MakeMap();
+                }
             }
-        }
 
-        if (GUILayout.Button("Load Map At File"))
-        {
-            if (Application.isPlaying)
+            if (GUILayout.Button("Load Map At File"))
             {
-                script.LoadMap();
+                if (Application.isPlaying)
+                {
+                    script.LoadMap();
+                }
             }
-        }
 
-        if (GUILayout.Button("Save Map to File"))
-        {
-            if (Application.isPlaying)
+            if (GUILayout.Button("Save Map to File"))
             {
-                script.SaveDataMap();
+                if (Application.isPlaying)
+                {
+                    script.SaveDataMap();
+                }
             }
         }
     }

@@ -1,23 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Custom Assets/Map Data")]
-public class MapData : ScriptableObject
+namespace SurviveTogether.World
 {
-    [Space]
-    [Header("===== Json Data Field =====")]
-    public string jsonDataMap;
-    [SerializeField] private MapConstructor _map;
-   
-    public void SaveAndConvertToJsonData(MapConstructor map)
+    [CreateAssetMenu(menuName = "Custom Assets/Map Data")]
+    public class MapData : ScriptableObject
     {
-        jsonDataMap = JsonUtility.ToJson(map);
-    }
+        [Space]
+        [Header("===== Json Data Field =====")]
+        public string jsonDataMap;
+        [SerializeField] private MapConstructor _map;
 
-    public MapConstructor LoadFromJson()
-    {
-        MapConstructor mapConstructor = JsonUtility.FromJson<MapConstructor>(jsonDataMap);;
-        return mapConstructor;
+        public void SaveAndConvertToJsonData(MapConstructor map)
+        {
+            jsonDataMap = JsonUtility.ToJson(map);
+        }
+
+        public MapConstructor LoadFromJson()
+        {
+            MapConstructor mapConstructor = JsonUtility.FromJson<MapConstructor>(jsonDataMap); ;
+            return mapConstructor;
+        }
     }
 }

@@ -4,71 +4,75 @@ using UnityEngine;
 using System;
 using System.Text;
 
-public enum TileSides
+namespace SurviveTogether.World
 {
-    Bottom,
-    Right,
-    Left,
-    Top
-}
-[System.Serializable]
-public class MapElement
-{
-
-    public int id = 0;
-    [NonSerialized] public MapElement[] tileSide = new MapElement[4];
-    public int tileTypeGroupId;
-    public int tileId;
-    public int bgTileId;
-    public bool isUsabl;
-    public bool isInteractable;
-
-    public void AddTileToSide(TileSides side, MapElement tile)
+    public enum TileSides
     {
-        tileSide[(int)side] = tile;
-        CalculateTilesID();
+        Bottom,
+        Right,
+        Left,
+        Top
     }
 
-    public void RemoveSide(MapElement tile)
+    [System.Serializable]
+    public class MapElement
     {
-        var total = tileSide.Length;
-        for (var i = 0; i < total; i++)
+
+        public int id = 0;
+        [NonSerialized] public MapElement[] tileSide = new MapElement[4];
+        public int tileTypeGroupId;
+        public int tileId;
+        public int bgTileId;
+        public bool isUsabl;
+        public bool isInteractable;
+
+        public void AddTileToSide(TileSides side, MapElement tile)
         {
-            if (tileSide[i] != null)
+            tileSide[(int)side] = tile;
+            CalculateTilesID();
+        }
+
+         void RemoveSide(MapElement tile)
+        {
+            var total = tileSide.Length;
+            for (var i = 0; i < total; i++)
             {
-                if (tileSide[i].id == tile.id)
+                if (tileSide[i] != null)
                 {
+                    if (tileSide[i].id == tile.id)
+                    {
+                        tileSide[i] = null;
+                    }
+                }
+            }
+            CalculateTilesID();
+        }
+
+        public void ClearTileSide()
+        {
+            var total = tileSide.Length;
+            for (var i = 0; i < total; i++)
+            {
+                var tile = tileSide[i];
+                if (tile != null)
+                {
+                    tile.RemoveSide(this);
                     tileSide[i] = null;
                 }
             }
+            CalculateTilesID();
         }
-        CalculateTilesID();
-    }
 
-    public void ClearTileSide()
-    {
-        var total = tileSide.Length;
-        for (var i = 0; i < total; i++)
+         void CalculateTilesID()
         {
-            var tile = tileSide[i];
-            if (tile != null)
+            var sideValues = new StringBuilder();
+
+            foreach (MapElement tile in tileSide)
             {
-                tile.RemoveSide(this);
-                tileSide[i] = null;
+                sideValues.Append(tile == null ? "0" : "1");
             }
+            tileTypeGroupId = Convert.ToInt32(sideValues.ToString(), 2);
         }
-        CalculateTilesID();
+
     }
-
-    private void CalculateTilesID()
-    {
-        var sideValues = new StringBuilder();
-
-        foreach (MapElement tile in tileSide)
-        {
-            sideValues.Append(tile == null ? "0" : "1");
-        }
-        tileTypeGroupId = Convert.ToInt32(sideValues.ToString(), 2);
-    }
-
 }
