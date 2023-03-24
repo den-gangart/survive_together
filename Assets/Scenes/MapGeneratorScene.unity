@@ -213,10 +213,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a4abf0759999504c91fea26d78d4a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapContainer: {fileID: 1732918213}
-  mapParam: {fileID: 11400000, guid: 5af18f9f6abab9044915c166fb54de4d, type: 2}
-  randomMapParamData: {fileID: 11400000, guid: 4761a764189d76443ad721fe7e78bc52, type: 2}
-  map:
+  _mapContainer: {fileID: 0}
+  _mapParam: {fileID: 0}
+  _randomMapParamData: {fileID: 0}
+  _map:
     tiles: []
     columns: 0
     rows: 0
@@ -388,6 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1889476261}
+  - component: {fileID: 1889476262}
   m_Layer: 0
   m_Name: MapContainer
   m_TagString: Untagged
@@ -410,3 +411,15 @@ Transform:
   m_Father: {fileID: 179369204}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1889476262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889476260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ccb08f6302f6c84dbb0981cb1907548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

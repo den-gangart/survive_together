@@ -4,17 +4,14 @@ using UnityEngine;
 
 namespace SurviveTogether.Players
 {
-    [RequireComponent(typeof(Animator))]
+   // [RequireComponent(typeof(Animator))]
     public class AnimationPlayerView : MonoBehaviour, IPlayerView
     {
+        [SerializeField]
         private Animator _animator;
         private const string X_VELOCITY_KEY = "XVelocity";
         private const string Y_VELOCITY_KEY = "YVelocity";
 
-        private void Awake()
-        {
-            _animator = GetComponent<Animator>();
-        }
 
         public void Move(Vector2 velocity)
         {

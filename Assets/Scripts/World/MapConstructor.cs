@@ -65,7 +65,7 @@ namespace SurviveTogether.World
             float hillPercent,
             float mountainPercent,
             float townPercent,
-            float CavePercent,
+            float cavePercent,
             float lakePercent,
             MapParamInfo mapParam
             )
@@ -85,7 +85,8 @@ namespace SurviveTogether.World
             DecorateTiles(LandTiles, hillPercent, TileType.Hills, mapParam);
             DecorateTiles(LandTiles, mountainPercent, TileType.Mountains, mapParam);
             DecorateTiles(LandTiles, townPercent, TileType.Towns, mapParam);
-            DecorateTiles(LandTiles, CavePercent, TileType.Cave, mapParam);
+            DecorateTiles(LandTiles, cavePercent, TileType.Cave, mapParam);
+            DecorateTiles(LandTiles, 1, TileType.Grass, mapParam);
 
         }
 
@@ -131,7 +132,6 @@ namespace SurviveTogether.World
                     {
                         tile.AddTileToSide(TileSides.Top, tiles[columns * (curRow - 1) + curColumn]);
                     }
-
                 }
             }
         }
@@ -163,39 +163,39 @@ namespace SurviveTogether.World
 
         MapElement DecorateTileParams(MapElement tile, TileType type, MapParamInfo mapParam)
         {
-            var prefBgTileId = -1;
-            var prefisInteractable = false;
+            var prefIsInteractable = false;
             tile.tileTypeGroupId = (int)type;
             var spriteCollection = mapParam.spriteCollection[tile.tileTypeGroupId].SpritesList;
             var prefTileId = spriteCollection.Count > 0 ? Random.Range(0, spriteCollection.Count - 1) : 0;
             var grassCollection = mapParam.spriteCollection[(int)TileType.Grass].SpritesList;
-            prefBgTileId = grassCollection.Count > 0 ? Random.Range(0, grassCollection.Count - 1) : 0;
+            var prefBgTileId = grassCollection.Count > 0 ? Random.Range(0, grassCollection.Count - 1) : 0;
 
             switch (type)
             {
                 case TileType.Empty:
                     tile.ClearTileSide();
-                    prefTileId = -1;
+                     prefTileId = -1;
                     prefBgTileId = -1;
                     break;
                 case TileType.Grass:
                     prefBgTileId = -1;
+                    prefIsInteractable = true;
                     break;
                 case TileType.Tree:
-                    prefisInteractable = true;
+                    prefIsInteractable = true;
                     break;
                 case TileType.Hills:
                     break;
                 case TileType.Mountains:
                     break;
                 case TileType.Towns:
-                    prefisInteractable = true;
+                    prefIsInteractable = true;
                     break;
                 case TileType.Castle:
-                    prefisInteractable = true;
+                    prefIsInteractable = true;
                     break;
                 case TileType.Cave:
-                    prefisInteractable = true;
+                    prefIsInteractable = true;
                     break;
                 default:
                     break;
@@ -204,7 +204,7 @@ namespace SurviveTogether.World
             tile.tileId = prefTileId;
             tile.bgTileId = prefBgTileId;
             tile.isUsabl = false;
-            tile.isInteractable = prefisInteractable;
+            tile.isInteractable = prefIsInteractable;
 
             return tile;
         }

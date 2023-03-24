@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SurviveTogether.World
@@ -35,22 +36,25 @@ namespace SurviveTogether.World
 
          void InitialTileByParams(GameObject currentTileObject, MapElement tile, MapParamInfo mapParam)
         {
-            var currCollider = currentTileObject.AddComponent<BoxCollider2D>();
             var spriteCollection = mapParam.spriteCollection[tile.tileTypeGroupId].SpritesList;
             var bgSr = currentTileObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
             var sr = currentTileObject.GetComponent<SpriteRenderer>();
 
             if (tile.tileId != -1)
             {
-                sr.sprite = spriteCollection[tile.tileId];
+                sr.sprite = GetSpriteWithCollection(spriteCollection, tile.tileId); // spriteCollection[tile.tileId];
             }
             if (tile.bgTileId != -1)
             {
                 var grassCollection = mapParam.spriteCollection[(int)TileType.Grass].SpritesList;
-                bgSr.sprite = grassCollection[tile.bgTileId];
+                bgSr.sprite = GetSpriteWithCollection(grassCollection, tile.tileId); // grassCollection[tile.bgTileId];
             }
-            currCollider.size = mapParam.tileSize;
-            currCollider.isTrigger = tile.isInteractable;
+            if (tile.tileTypeGroupId > 15)
+            {
+                var currCollider = currentTileObject.AddComponent<BoxCollider2D>(); // TODO: added collider to brefabs & get component only in usible tiles
+                currCollider.size = mapParam.tileSize;
+                currCollider.isTrigger = tile.isInteractable;
+            }
         }
 
          void ClearMapContainer(GameObject mapContainer)
@@ -63,6 +67,12 @@ namespace SurviveTogether.World
             }
         }
 
+        Sprite GetSpriteWithCollection(List<Sprite> spriteCollection, int spriteId )
+        {
+            var collectionSize = spriteCollection.Count;
+
+            return collectionSize <= spriteId ? spriteCollection[0] : spriteCollection[spriteId];
+        }
 
     }
 }

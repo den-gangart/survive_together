@@ -36,7 +36,6 @@ namespace SurviveTogether.UI
         private void OnSettingsPressed() => throw new NotImplementedException();
         private void OnSoundPressed() => throw new NotImplementedException();
         private void OnExitPressed() => Application.Quit();
-
         private void OnCreateLobbyEvent(CreateLobbyEvent e) => OpenLobby();
         private void OnJoinLobbyEvent(JoinLobbyEvent e) => OpenLobby();
         private void ConnectEvent(ConnectEvent e) => OpenWindow(_connectionWindow);

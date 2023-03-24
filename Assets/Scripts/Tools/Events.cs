@@ -17,6 +17,11 @@ public class CreateLobbyEvent : GameEvent
     public Lobby lobby;
 }
 
+public class TileEnterEvent : GameEvent // TODO: Create Event System Handler For Player/Map
+{
+    public string name;
+}
+
 public class ConnectEvent: GameEvent { }
 public class LeftLobbyEvent: GameEvent {}
 public class StartGameSessionEvent : GameEvent 
